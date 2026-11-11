@@ -32,7 +32,7 @@ fetch_nopar <-
       sort()
 
     if(verbose == 1){
-      pb = txtProgressBar(min = 0, max = length(subset), initial = 0, style = 3)
+      pb = utils::txtProgressBar(min = 0, max = length(subset), initial = 0, style = 3)
     }
 
     ret <- foreach::foreach (
@@ -136,7 +136,7 @@ fetch_nopar <-
 
         #and now the rest
         #brief sleep
-        Sys.sleep(sample(rnorm(100, sleep_dur, 0.1), 1))
+        Sys.sleep(sample(stats::rnorm(100, sleep_dur, 0.1), 1))
         if (query == "name") {
           elevation <- rredlist::rl_search(name = species, key = key)
         } else if (query == "ID") {
@@ -184,9 +184,9 @@ fetch_nopar <-
         df[,2]=999
         df <- df
       })
-      Sys.sleep(sample(rnorm(100, sleep_dur, 0.1), 1))
+      Sys.sleep(sample(stats::rnorm(100, sleep_dur, 0.1), 1))
       if(verbose == 1){
-        setTxtProgressBar(pb,i)
+        utils::setTxtProgressBar(pb,i)
       }else if(verbose ==2){
         print(paste("task", i, "is complete"))
       }

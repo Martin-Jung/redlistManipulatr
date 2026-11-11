@@ -71,11 +71,11 @@ RL_fetch <-
       stop("Please supply a valid value for 'query'. 'query' should be between a character input.")
     }else if(!(query %in% c("name", "ID"))){
       stop("Please supply a valid value for 'query'. 'query' should be between a character input of 'name' or 'ID'.")
-    }else if(query == "ID" & class(x) == "integer"){
+    }else if(query == "ID" & is.integer(x)){
       x <- x %>%
         as.character() %>%
         as.numeric()
-    }else if(query == "name" & class(x) == "integer"){
+    }else if(query == "name" & is.integer(x)){
       x <- x %>%
         as.character()
     }

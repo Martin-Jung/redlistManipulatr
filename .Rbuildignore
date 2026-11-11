@@ -7,3 +7,4 @@
 ^\.github$
 
 ^vignette\.Rmd
+^vignettes/redlistManipulatr\.Rmd$

@@ -13,7 +13,7 @@ redlistManipulatr collects a group of functions used to pull and manipulate IUCN
 You can install the released version of redlistManipulatr from [github](https://github.com/matthewlewis896/redlistManipulatr) with:
 
 ``` r
-remotes::install_github("matthewlewis896/redlistManipulatr", build_vignettes = TRUE)
+remotes::install_github("matthewlewis896/redlistManipulatr")
 ```
 
 ## Description
@@ -32,8 +32,4 @@ library(redlistManipulatr)
 
 ### Capabilities
 
-To see a breakdown of the main functions of the package with examples see the `vignette`.
-
-``` r
-vignette("redlistManipulatr")
-```
+For examples, see the help pages for the individual `RL_` functions.

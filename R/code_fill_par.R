@@ -27,9 +27,9 @@ code_fill_par <-
           cat(sprintf("task %d is complete\n", n))#print when each row is complete
       opts <- list(progress = progress)
     } else if (verbose == 1) {
-      pb <- txtProgressBar(style = 3)
+      pb <- utils::txtProgressBar(style = 3)
       progress <- function(n)
-        setTxtProgressBar(pb, n)
+        utils::setTxtProgressBar(pb, n)
       opts <- list(progress = progress)
     } else{
       opts <- NULL

@@ -7,6 +7,7 @@ export(RL_code_fill)
 export(RL_crosswalk)
 export(RL_elevation_check)
 export(RL_fetch)
+export(RL_population)
 export(RL_recode_seasons)
 export(RL_recode_suitabilities)
 export(RL_reformat_long)
@@ -15,16 +16,8 @@ export(RL_sp_list)
 export(RL_subset_acceptable)
 export(RL_subset_seasons)
 export(RL_threats)
-export(rnorm)
-export(setTxtProgressBar)
-export(txtProgressBar)
 importFrom(foreach,
   "%do%",
   "%dopar%"
 )
 importFrom(magrittr,"%>%")
-importFrom(stats,rnorm)
-importFrom(utils,
-  setTxtProgressBar,
-  txtProgressBar
-)

@@ -20,7 +20,7 @@ code_fill_nopar <-
            subset,
            verbose) {
     if(verbose == 1){
-      pb = txtProgressBar(min = 0, max = subset, initial = 0, style = 3)
+      pb = utils::txtProgressBar(min = 0, max = subset, initial = 0, style = 3)
     }
 
     hab_cols <- hab_col_positions()
@@ -89,7 +89,7 @@ code_fill_nopar <-
         }
       }
       if(verbose == 1){
-        setTxtProgressBar(pb,i)
+        utils::setTxtProgressBar(pb,i)
       }else if(verbose ==2){
         print(paste("task", i, "is complete"))
       }

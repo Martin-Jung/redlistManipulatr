@@ -29,8 +29,8 @@ fetch_par <-
           cat(sprintf("task %d is complete\n", n))#print when each row is complete
       opts <- list(progress = progress)
     } else if (verbose == 1){
-      pb <- txtProgressBar(style = 3, max = length(subset))
-      progress <- function(n) setTxtProgressBar(pb, n)
+      pb <- utils::txtProgressBar(style = 3, max = length(subset))
+      progress <- function(n) utils::setTxtProgressBar(pb, n)
       opts <- list(progress = progress)
     }else{
       opts <- NULL
@@ -162,7 +162,7 @@ fetch_par <-
 
         #and now the rest
         #brief sleep
-        Sys.sleep(sample(rnorm(100, sleep_dur, 0.1), 1))
+        Sys.sleep(sample(stats::rnorm(100, sleep_dur, 0.1), 1))
         if (query == "name") {
           elevation <- rredlist::rl_search(name = species, key = key)
         } else if (query == "ID") {
@@ -210,7 +210,7 @@ fetch_par <-
         df[,2]=999
         df <- df
       })
-      Sys.sleep(sample(rnorm(100, sleep_dur, 0.1), 1))
+      Sys.sleep(sample(stats::rnorm(100, sleep_dur, 0.1), 1))
       df
     }
     df <- do.call("cbind", ret)
