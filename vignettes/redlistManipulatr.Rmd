@@ -10,9 +10,14 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
+# Leave API-backed examples out of builds that have no IUCN API key.
+has_iucn_api_key <- nzchar(trimws(Sys.getenv("IUCN_REDLIST_KEY", unset = "")))
+
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#"
+  comment = "#",
+  eval = has_iucn_api_key,
+  include = has_iucn_api_key
 )
 ```
 
