@@ -1,18 +1,19 @@
-#' Subset to species-season combinations
-#' @description Subset wide format data to species-season combinations. Also allows copying of data for missing desired seasons.
+#' Subset data to selected species-season combinations
+#' @description Keep the requested species-season combinations and optionally fill a requested season from data for other seasons.
 #' @author Matt Lewis, \email{matthewlewis896@@gmail.com}
 #'
-#' @param x A wide format dataframe with one column per habitat category. As output by RL_fetch().
-#' @param season_df A dataframe consisting of a column for species and a column for season. A species with multiple seasons desired should have one row per season. See Details.
-#' @param query Character. Are species represented by names ("name") or IUCN IDs ("ID")?
-#' @param species.col.name (optional) Character. What column name of \code{season_df} are the species names/IDs found in. Defaults to the first column of the dataframe.
-#' @param season.col.name (optional) Character. What column name of \code{season_df} are the seasons found in. Defaults to the second column of the dataframe.
-#' @param fill.missing.seasons (optional) Vector. If seasons are present in \code{season_df} but not on the Red List, should data be copied from seasons which are present and if so which? Acceptable values are season codes - see \code{seasons}. Defaults to NA (no copying).
-#' @param retain.na.seasons (optional) Logical. Some seasons are coded as NA on the Red List. RL_fetch() pulls these down as 999. Would you like to retain these seasons? Defaults to FALSE.
-#' @param retain.missing.sp (optional) Logical. If a species is not found in season_df, should it be retained? Defaults to TRUE.
-#' @details \code{season_df} should have seasons coded numerically as per \code{redlistManipulatr::seasons$Code}.
-#' @details If the data for a season doesn't exist on the RedList (e.g. a bird may have breeding season and non-breeding season data but no data for resident), then \code{fill.missing.seasons} lets you say which seasons you want to copy data from. This can include any of the Red List season codes - for instance \code{fill.missing.seasons = c(1,2,5)} would mean that for a season we're missing data for, we look at the data (if it exists) for the \code{resident}, \code{breeding season}, and \code{seasonal occurrence uncertain} seasons and select the most suitable combination - e.g. if \code{resident} has habitat 1.2 as \code{suitable} \code{major importance Yes} and \code{breeding season} has it as \code{marginal} \code{major importance No} then we take the value from \code{resident} because it has a higher suitability.
-#' @return A dataframe in wide format (one column per habitat type).
+#' @param x A wide-format \code{data.frame} with one column per habitat category, such as the output of \code{RL_fetch()}.
+#' @param season_df A \code{data.frame} with a species name or ID column and a season-code column. Include one row for each desired species-season combination.
+#' @param query Species identifier type: \code{"name"} for scientific names or \code{"ID"} for IUCN Red List IDs.
+#' @param species.col.name Name of the species column in \code{season_df}. Defaults to its first column.
+#' @param season.col.name Name of the season-code column in \code{season_df}. Defaults to its second column.
+#' @param fill.missing.seasons Season codes from which to copy data when a requested season is absent. Defaults to \code{NA}, which disables copying. See \code{seasons} for valid codes.
+#' @param retain.na.seasons Logical. If \code{TRUE}, retain rows with missing season information, coded as \code{999} by \code{RL_fetch()}. Defaults to \code{FALSE}.
+#' @param retain.missing.sp Logical. If \code{TRUE}, retain species in \code{x} that are absent from \code{season_df}. Defaults to \code{TRUE}.
+#' @details The season column in \code{season_df} should use the numeric codes in \code{redlistManipulatr::seasons$Code}.
+#'
+#' If a requested season is absent from the Red List data, \code{fill.missing.seasons} specifies which available seasons may supply its habitat values. For each habitat, the value with the highest rank in \code{suitability_ordered} is copied. For example, \code{fill.missing.seasons = c(1, 2, 5)} allows data to be copied from Resident, Breeding Season, or Seasonal Occurrence Uncertain records.
+#' @return A wide-format \code{data.frame} containing the requested species-season combinations, plus any species retained by \code{retain.missing.sp}.
 #' @export
 
 RL_subset_seasons <-

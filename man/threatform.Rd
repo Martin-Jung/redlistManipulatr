@@ -2,18 +2,18 @@
 % Please edit documentation in R/threatform.R
 \name{threatform}
 \alias{threatform}
-\title{Long format dataframe for RL_threats}
+\title{Build the long-format threat output}
 \usage{
 threatform(threats = redlistManipulatr::threats)
 }
 \arguments{
-\item{threats}{Dataframe of Red List threat categories. Taken from redlistManipulatr::threats}
+\item{threats}{\code{data.frame} of Red List threat categories, such as \code{redlistManipulatr::threats}.}
 }
 \value{
-A dataframe in long format (one row per threat-species combination).
+A long-format \code{data.frame} with one row per species-threat combination.
 }
 \description{
-Internal Function. Makes a long format dataframe to output RL_threats() into according to the Red List threats.
+Internal helper that creates the threat columns used in the output of \code{RL_threats()}.
 }
 \author{
 Matt Lewis, \email{matthewlewis896@gmail.com}

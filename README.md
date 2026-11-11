@@ -6,30 +6,28 @@
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/matthewlewis896/redlistManipulatr?branch=master&svg=true)](https://ci.appveyor.com/project/matthewlewis896/redlistManipulatr)
 <!-- badges: end -->
 
-redlistManipulatr collects a group of functions used to pull and manipulate IUCN Red List habitat and elevation data.
+`redlistManipulatr` provides functions for retrieving and manipulating IUCN Red List habitat, elevation, threat, and population data.
 
 ## Installation
 
-You can install the released version of redlistManipulatr from [github](https://github.com/matthewlewis896/redlistManipulatr) with:
+Install the package from GitHub with:
 
 ``` r
 remotes::install_github("matthewlewis896/redlistManipulatr")
 ```
 
-## Description
+## API access
 
-All functions intended for end users are denoted by a preceeding `RL_`.
+`RL_fetch()`, `RL_threats()`, `RL_sp_list()`, and `RL_population()` use the IUCN Red List API. Set your API key in the `IUCN_REDLIST_KEY` environment variable, for example in your `.Renviron` file, or pass it through the function's `key` argument. API keys are available through the account page at [api.iucnredlist.org](https://api.iucnredlist.org/).
 
-This package also contains several pieces of Red List data, including transcriptions of the [Red List Habitat Classification scheme v3.1](https://www.iucnredlist.org/resources/habitat-classification-scheme) and the [Red List Seasonal Distribution Codes](https://www.iucnredlist.org/resources/mappingstandards). See `?habitats` and `?seasons` for more information and `View(habitats)` or `View(seasons)` to view the data.
+## Package contents
 
-## Use
+Functions intended for direct use are prefixed with `RL_`. They retrieve species lists and assessment data, recode or subset habitat and season values, check elevation ranges, and reshape or crosswalk habitat data. See the help pages for individual functions or the package vignette, `vignette("redlistManipulatr")`, for a workflow.
 
-### Loading the Package
+The package provides data transcribed from IUCN classifications: `habitats`, `seasons`, and `threats`. It includes code tables for habitat suitability and major importance, plus `hab_conversion_lut` for mapping habitat categories to integer names. See `?habitats`, `?seasons`, and `?threats` for sources and details.
 
-``` r
+Load the package with:
+
+```r
 library(redlistManipulatr)
 ```
-
-### Capabilities
-
-For examples, see the help pages for the individual `RL_` functions.

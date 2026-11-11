@@ -9,21 +9,20 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-# Leave API-backed examples out of builds that have no IUCN API key.
+```{r, include = FALSE, eval = TRUE}
+# Run API-backed examples only when an IUCN API key is available.
 has_iucn_api_key <- nzchar(trimws(Sys.getenv("IUCN_REDLIST_KEY", unset = "")))
 
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#",
-  eval = has_iucn_api_key,
-  include = has_iucn_api_key
+  eval = FALSE
 )
 ```
 
 ## Setup:
 
-```{r setup}
+```{r setup, eval = TRUE}
 library(redlistManipulatr)
 ```
 
@@ -31,13 +30,13 @@ library(redlistManipulatr)
 
 ### Getting a list of all species on the Red List
 
-`RL_sp_list()` obtains the latest global assessment summary for species listed by the Red List API. It combines the current `rredlist` kingdom endpoints. The API summary includes the SIS taxon ID, scientific name, Kingdom, and assessment category; it does not include the other taxonomic ranks or population information returned by the retired endpoint.
+`RL_sp_list()` retrieves the latest global assessment summary from the current kingdom-level endpoints in `rredlist`. The summary includes the SIS taxon ID, scientific name, Kingdom, and assessment category. The current endpoint does not provide the other taxonomic ranks or population information available from the retired endpoint.
 
-It reads the API key by default from `Sys.getenv("IUCN_REDLIST_KEY")`. Add `IUCN_REDLIST_KEY=your.api.key` to your `.Renviron` file, or pass `key` explicitly. Keys are available from the account page linked from https://api.iucnredlist.org/.
+The function reads the API key by default from `Sys.getenv("IUCN_REDLIST_KEY")`. Set `IUCN_REDLIST_KEY=your.api.key` in your `.Renviron` file, or pass `key` explicitly. API keys are available through the account page at <https://api.iucnredlist.org/>.
 
-Optional parameters `retain.population` and `retain.category` allow you to retain the species' population info and assessment category respectively.
+The `retain.category` parameter controls whether the assessment category is included. `retain.population` is retained for compatibility, but the current summary endpoint does not provide population information; requesting it produces a warning. Use `RL_population()` with assessment IDs to retrieve structured population fields from full assessment records.
 
-`retain.taxonomic.info` controls whether available taxonomic information is retained: all available fields (`all`), Kingdom and Class when supplied (`some`), or no taxonomy fields (`none`). The current summary endpoint supplies Kingdom only.
+`retain.taxonomic.info` controls which available taxonomic fields are retained: all available fields (`"all"`), Kingdom and Class when supplied (`"some"`), or none (`"none"`). The current summary endpoint supplies Kingdom only. The taxon ID and scientific name are always returned.
 
 ``` {r, eval = FALSE}
 
@@ -50,7 +49,7 @@ sp_list <-
 
 ```
 
-``` {r, echo = FALSE}
+``` {r, echo = FALSE, eval = has_iucn_api_key, include = has_iucn_api_key}
 sp_list <-
   RL_sp_list(
     retain.taxonomic.info = "some",
@@ -59,19 +58,23 @@ sp_list <-
   )
 ```
 
-``` {r, echo = FALSE, results = "asis"}
+``` {r, echo = FALSE, results = "asis", eval = has_iucn_api_key, include = has_iucn_api_key}
 
 knitr::kable(sp_list[1:10,])
 
 ```
 
+### Getting population information for selected assessments
+
+`RL_population()` retrieves structured population fields from full assessment records. It requires assessment IDs; the SIS taxon IDs in the `taxonid` column returned by `RL_sp_list()` are a different identifier. Set `include.documentation = TRUE` to include the population narrative when it is available. See `?RL_population()` for the returned fields.
+
 ### Obtaining habitat and elevation data from the Red List
 
 `RL_fetch()` obtains habitat and elevation data from the Red List API.
 
-Species' names or IDs are supplied using the parameter `x`. `x` can be a `vector`, `list`, or `dataframe` of species' names or IUCN IDs (specify which using the parameter `query`). If `x` is a `dataframe`, the additional parameter `col.name` is needed to specify the column name of the species' names/IDs.
+Supply species names or IUCN Red List IDs through `x`, as a vector, list, or `data.frame`. Set `query` to `"name"` or `"ID"` to choose the lookup type. If `x` is a `data.frame`, use `col.name` to identify the column containing the names or IDs.
 
-The methods read the Red List API key by default from `Sys.getenv("IUCN_REDLIST_KEY")`. Add `IUCN_REDLIST_KEY=your.api.key` to your `.Renviron` file, or pass `key` explicitly. Keys are available from the account page linked from https://api.iucnredlist.org/.
+The function reads the API key by default from `Sys.getenv("IUCN_REDLIST_KEY")`. Set `IUCN_REDLIST_KEY=your.api.key` in your `.Renviron` file, or pass `key` explicitly. API keys are available through the account page at <https://api.iucnredlist.org/>.
 
 A simple example could look like:
 
@@ -88,7 +91,7 @@ df <-
     query = "name"
   )
 ```
-``` {r, echo = FALSE}
+``` {r, echo = FALSE, eval = has_iucn_api_key, include = has_iucn_api_key}
 
 df <- 
   RL_fetch(
@@ -103,21 +106,20 @@ df <-
 
 ```
 
-This produces a `dataframe` in the following form (n.b. not all columns are shown for space).
+This returns a `data.frame` in wide format. The table below shows only some columns.
 
-Habitat suitability is coded as `3` for Suitable, `2` for Marginal, `5` for Unknown, and `999` for any missing values. See the `suitability` dataset.
+Habitat suitability codes include `3` for Suitable, `2` for Marginal, and `5` for Unknown; missing suitability is coded as `999`. See the `suitability` dataset.
 
 Habitat major importance is coded as `1` for Yes, `2` for No, and `3` for missing values. See the `major_importance` dataset.
 
-These values are pasted together to give the values for each habitat class cell such that a suitable-major importance:Yes habitat is given the value `31`. 
+The suitability and major-importance codes are concatenated in each habitat cell. For example, `31` represents suitable habitat of major importance.
 
-If there are no habitat data associated with a species, it is given the value of `66`.
+If a species has no habitat data, its habitat columns contain `66`.
 
-If elevation data is missing, the minimum/maximum elevation value is set to `-99999` or `99999` respectively.
+If elevation data are missing, minimum and maximum elevation are set to `-99999` and `99999`, respectively.
+Season codes follow the Red List: `1` is Resident, `2` is Breeding Season, `3` is Non-breeding Season, `4` is Passage, and `5` is Seasonal Occurrence Uncertain. Missing season codes are represented by `999`. See the `seasons` dataset.
 
-Seasons are coded as per the Red List, such that `1` is Resident, `2` is Breeding Season, `3` is Non-breeding Season, `4` is Passage, and `5` is Seasonal Occurrence Uncertain. Missing values are again given `999`. See the `seasons` dataset.
-
-``` {r, echo = FALSE, results = "asis"}
+``` {r, echo = FALSE, results = "asis", eval = has_iucn_api_key, include = has_iucn_api_key}
 
 knitr::kable(df[,1:18])
 
@@ -133,21 +135,19 @@ The duration of sleep between each call to the Red List API can also be manually
 
 Finally, there are 3 options for `verbose`. `verbose = 0` gives no progress update, `verbose = 1` gives a progress bar (the default), and `verbose = 2` prints one line for each task completed.
 
-Habitat suitability and major importance codes (see the `habitats` and `major_importance` data) are pasted together to give each cell value.
-
 For more details see `?RL_fetch()`.
 
 ### Recoding Level 1 or Level 2 habitats
 
-`RL_code_fill()` allows filling of Level 1 codes with the maximum suitable corresponding Level 2 code, and filling of blank Level 2 codes with the value of the corresponding Level 1 code.
+`RL_code_fill()` copies values from Level 2 categories to their Level 1 parent, or from a Level 1 category to its Level 2 categories. The `level1.recode` and `level2.recode` parameters control these directions.
 
-It takes an input of a wide format `dataframe` `x` (as output by `RL_fetch()`).
+It takes a wide-format `data.frame` such as the output of `RL_fetch()`.
 
-Note: Running `RL_code_fill()` multiple times will fill out Level 1/Level 2 habitats which only exist because of a previous function call. It is advisable only to run this function once.
+Run `RL_code_fill()` once on a dataset. Repeated calls can propagate values added by earlier calls.
 
 Example use:
 
-``` {r}
+``` {r, eval = has_iucn_api_key}
 df2 <-
   RL_code_fill(
     x = df,
@@ -156,7 +156,7 @@ df2 <-
   )
 ```
 
-``` {r, echo = FALSE, results = "asis"}
+``` {r, echo = FALSE, results = "asis", eval = has_iucn_api_key, include = has_iucn_api_key}
 
 knitr::kable(df2[,1:18])
 
@@ -174,11 +174,11 @@ Some species have seasonal occurrence for a particular habitat missing on the Re
 
 `RL_recode_seasons()` recodes `999` seasons as 'Resident', giving a code of `1` (see the `seasons` data).
 
-As `RL_recode_seasons()` may cause multiple rows for Resident seasons (e.g. if a species has data that is both Resident and missing for season), the parameter `combine.rows` allows combining of these rows. In the case of both rows having suitability values for a habitat, the highest ranked suitability-major importance combination is selected, see `suitability_ordered` for this ranking. As a result, it is recommended to run `RL_recode_suitabilities()` before `RL_recode_seasons()` if both are required, as `999` habitats are low priority. `combine.rows` defaults to `FALSE`.
+Recoding seasons can create duplicate Resident rows when both Resident and missing-season data are present. Set `combine.rows = TRUE` to combine these rows, retaining the highest-ranked suitability-major importance value for each habitat according to `suitability_ordered`. If both recoding functions are needed, run `RL_recode_suitabilities()` first so missing suitability values are replaced before rows are combined. `combine.rows` defaults to `FALSE`.
 
 `combine.rows = FALSE`: 
 
-``` {r}
+``` {r, eval = has_iucn_api_key}
 df3 <-
   RL_recode_seasons(
     x = df2,
@@ -186,14 +186,14 @@ df3 <-
   )
 ```
 
-``` {r echo = FALSE, results = "asis"}
+``` {r, echo = FALSE, results = "asis", eval = has_iucn_api_key, include = has_iucn_api_key}
 
 knitr::kable(df3[,1:18])
 
 ```
 
 `combine.rows = TRUE`: 
-``` {r}
+``` {r, eval = has_iucn_api_key}
 df3 <-
   RL_recode_seasons(
     x = df2,
@@ -201,7 +201,7 @@ df3 <-
   )
 ```
 
-``` {r echo = FALSE, results = "asis"}
+``` {r, echo = FALSE, results = "asis", eval = has_iucn_api_key, include = has_iucn_api_key}
 
 knitr::kable(df3[,1:18])
 
@@ -211,9 +211,9 @@ See `?RL_recode_suitabilities()` or `?RL_recode_seasons()` for more details.
 
 ### Checking elevation values
 
-Sometimes a species on the Red List will have minimum elevation > maximum elevation, something which cannot be true. `RL_elevation_check()` finds all instances of this and changes them to be -99999 and 99999 for min and max altitude respectively.
+An assessment can contain a minimum elevation greater than its maximum elevation. `RL_elevation_check()` finds these rows and replaces the minimum and maximum values with `-99999` and `99999`, respectively, by default.
 
-This works on any wide-format `dataframe` or a long-format `dataframe` (from `RL_reformat_long()`).
+It accepts a wide- or long-format `data.frame`, including data from `RL_reformat_long()`.
 
 See `?RL_elevation_check()` for more details and other options.
 
@@ -223,15 +223,15 @@ In some cases, a species may have particular seasons which are desired and other
 
 Once again, `x` is a wide format `data.frame` as output by `RL_fetch()` or any function manipulating it.
 
-`season_df` is a `dataframe` that contains at least two columns: one for species' names or IDs, and one for the season codes that are wanted for that species. A species with multiple seasons wanted should have one row per season. By default, the first column is assumed to be species' names/IDs and the second to be seasons, but this can be changed by specifying the column names with `species.col.name` and `season.col.name`. `query` specifies whether we are dealing with species' names ("name") or IDs ("ID").
+`season_df` is a `data.frame` with at least two columns: one for species names or IDs and one for desired season codes. Include one row per desired species-season combination. By default, the first two columns are used; set `species.col.name` and `season.col.name` to choose different columns. Set `query` to `"name"` or `"ID"` to match the identifiers in `x`.
 
-As well as subsetting to desired seasons, `RL_subset_seasons()` also allows filling of missing seasons. If, for instance, a species has data for the Breeding Season and Non-breeding Season, but not data for when it is Resident (the desired season), this can be copied from the other seasons. `fill.missing.seasons` takes a `vector` input of seasons to copy from - in this example `fill.missing.seasons = c(2, 3)` - and will copy the highest suitability-major importance combination available for that habitat class. This ranking of suitability-major importance combinations is controlled by the dataset `suitability_ordered`.
+`RL_subset_seasons()` can also fill a desired season that is absent from the data. For example, if Resident is desired but only Breeding Season and Non-breeding Season records are available, set `fill.missing.seasons = c(2, 3)` to allow those records to supply values. For each habitat, the highest-ranked suitability-major importance value is selected according to `suitability_ordered`.
 
-`retain.na.seasons` allows missing seasons (coded as `999` by `RL_fetch()`) to be retained even if not present in `season_df`. This defaults to `FALSE`. Other options include first recoding these seasons with `RL_recode_seasons()`.
+Set `retain.na.seasons = TRUE` to retain missing seasons (coded as `999` by `RL_fetch()`) even when they are not listed in `season_df`. The default is `FALSE`; another option is to recode them first with `RL_recode_seasons()`.
 
-`retain.missing.sp` allows species not present in `season_df` to be retained. Meaning species present in `season_df` will be subset to the desired seasons while those which aren't present are retained as they are. Defaults to `TRUE`.
+Set `retain.missing.sp = TRUE` to retain species in `x` that are absent from `season_df`. Species listed in `season_df` are still subset to the requested seasons. This option defaults to `TRUE`.
 
-``` {r}
+``` {r, eval = has_iucn_api_key}
 my_seasons <-
   data.frame(
     species = c("Panthera leo",
@@ -244,14 +244,14 @@ df4 <-
          x = df2,
          season_df = my_seasons,
          query = "name",
-         fill.missing.seasons = c(1, 999),
+         fill.missing.seasons = c(2, 3),
          retain.na.seasons = FALSE,
          retain.missing.sp = FALSE
      )
 
 ```
 
-``` {r, echo = FALSE, results = "asis"}
+``` {r, echo = FALSE, results = "asis", eval = has_iucn_api_key, include = has_iucn_api_key}
 
 rownames(df4) <- 1:nrow(df4)
 
@@ -263,13 +263,13 @@ See `RL_subset_seasons()` for more details.
 
 ### Subsetting to retain only some habitat suitabilities or major importances
 
-For Area Of Habitat (AOH) maps or similar, you may only want to retain habitats habitats of particular suitabilities or major importances. `RL_subset_acceptable()` allows you to do this by specifying which suitabilities and major importances are good enough. Those which are not are recoded as `NA`.
+For Area of Habitat (AOH) maps or similar analyses, you may want to retain only selected habitat suitability or major-importance values. `RL_subset_acceptable()` lets you choose which codes to keep; other values are replaced with `NA`.
 
 `acceptable_suitabilities` and `acceptable_importances` each take a vector input of suitability/major importance codes (see the `suitability` and `major_importance` datasets) of which to retain. Both default to accepting all, meaning that specifying `acceptable_suitabilities` without specifying `acceptable_importances` will only filter by suitability.
 
 `na.rm` allows you to specify whether a row should be removed if all of its habitat classes are changed to `NA`. This defaults to `TRUE`.
 
-``` {r}
+``` {r, eval = has_iucn_api_key}
 
 df5 <-
   RL_subset_acceptable(
@@ -280,7 +280,7 @@ df5 <-
 
 ```
 
-``` {r, echo = FALSE, results = "asis"}
+``` {r, echo = FALSE, results = "asis", eval = has_iucn_api_key, include = has_iucn_api_key}
 
 knitr::kable(df5[,1:18])
 
@@ -288,20 +288,20 @@ knitr::kable(df5[,1:18])
 
 See `?RL_subset_acceptable()` for more details.
 
-### Crosswalking habitats classes to a look-up table
+### Crosswalking habitat classes to a look-up table
 
-Red List habitat classes may want to be converted via a look-up table to new values, for instance land cover. `RL_crosswalk()` allows cross-walking of a one-to-one, one-to-many, or many-to-many look-up table (`lut`) on a wide-format input (`x`).
+You can map Red List habitat classes to another classification, such as land cover, using a look-up table. `RL_crosswalk()` supports one-to-one, one-to-many, and many-to-many mappings from `lut` applied to a wide-format input `x`.
 
-A default `lut` is supplied via the \code{hab_conversion_lut} dataset which just converts habitat classes to integer values - e.g. 1.1 -> 110; 9.8.1 -> 981.
+The default `lut`, `hab_conversion_lut`, maps habitat classes to integer column names; for example, `1.1` maps to `110` and `9.8.1` maps to `981`.
 
 If supplying your own `lut`, the parameters `new.code.colname` and `old.code.colname` allow you to specify which columns of `lut` correspond to the new values and the old IUCN habitat codes. This defaults to the first column for new values and the second for old values if these parameters are not specified.
 
-When cross-walking, you can choose whether to change values using `recode`. `"no"` will keep the habitat-major importance values (note: if using a many-to-many `lut`, the highest ranked suitability-major importance combination from `suitability_ordered` is selected). `"one"` recodes any present values to `1`, and `"colname"` recodes values to the name of the column they are in.
+Use `recode` to choose how habitat values are handled. `"no"` retains the existing suitability-major importance code, choosing the highest-ranked value from `suitability_ordered` when several old classes map to one new class. `"one"` assigns `1` to each non-missing value, and `"colname"` assigns the new habitat column name.
 
-If recoding, then `RL_subset_acceptable()` should be run first if only some suitability/major importance combinations are wanted.
+If only selected suitability or major-importance values should be retained, apply `RL_subset_acceptable()` before `RL_crosswalk()`.
 
 
-``` {r}
+``` {r, eval = has_iucn_api_key}
 df6 <-
   RL_crosswalk(
     x = df5,
@@ -309,7 +309,7 @@ df6 <-
   )
 ```
 
-``` {r, echo = FALSE, results = "asis"}
+``` {r, echo = FALSE, results = "asis", eval = has_iucn_api_key, include = has_iucn_api_key}
 
 knitr::kable(df6[,1:18])
 
@@ -318,11 +318,11 @@ See `?RL_crosswalk()` for more details.
 
 ### Reformatting to other formats
 
-Thus far we have dealt only with wide-format data (one column per habitat type), but sometimes long-format data (one row per habitat type) can be useful.
+So far, the examples have used wide-format data (one column per habitat category). Long-format data (one row per species-season-habitat combination) can be useful for other analyses.
 
-`RL_reformat_long()` deals with this and can be used at any stage of the process prior to crosswalking to a look-up table (i.e. before use of `RL_crosswalk()`). `x` is the input `dataframe`, while `na.rm` allows you to remove rows with habitats that have no suitability information. This defaults to `TRUE`.
+`RL_reformat_long()` converts wide data to long format and can be used before crosswalking with `RL_crosswalk()`. The `x` argument is the input `data.frame`; `na.rm` controls whether rows with missing or no habitat information are removed. It defaults to `TRUE`.
 
-``` {r}
+``` {r, eval = has_iucn_api_key}
 df7 <-
   RL_reformat_long(
     x = df5,
@@ -330,21 +330,21 @@ df7 <-
   )
 ```
 
-``` {r, echo = FALSE, results = "asis"}
+``` {r, echo = FALSE, results = "asis", eval = has_iucn_api_key, include = has_iucn_api_key}
 
 knitr::kable(df7[,])
 
 ```
 
-`RL_reformat_wide()` allows reformatting of the output of `RL_reformat_long()` back to wide-format. The parameter `x` is the long-format `dataframe`.
+`RL_reformat_wide()` converts the output of `RL_reformat_long()` back to wide format. Supply the long-format `data.frame` through `x`.
 
-### Obtaining threat info from the Red List
+### Obtaining threat information from the Red List
 
-`RL_threats()` obtains threats data from the Red List API.
+`RL_threats()` retrieves threat information from the Red List API and returns one row per species-threat combination.
 
-Species' names or IDs are supplied using the parameter `x`. `x` can be a `vector`, `list`, or `dataframe` of species' names or IUCN IDs (specify which using the parameter `query`). If `x` is a `dataframe`, the additional parameter `col.name` is needed to specify the column name of the species' names/IDs.
+As with `RL_fetch()`, supply species names or IUCN Red List IDs through `x` as a vector, list, or `data.frame`. Set `query` to `"name"` or `"ID"`. For a `data.frame`, use `col.name` to identify the column containing the names or IDs.
 
-The methods read the Red List API key by default from `Sys.getenv("IUCN_REDLIST_KEY")`. Add `IUCN_REDLIST_KEY=your.api.key` to your `.Renviron` file, or pass `key` explicitly. Keys are available from the account page linked from https://api.iucnredlist.org/.
+The function reads the API key by default from `Sys.getenv("IUCN_REDLIST_KEY")`. Set `IUCN_REDLIST_KEY=your.api.key` in your `.Renviron` file, or pass `key` explicitly. API keys are available through the account page at <https://api.iucnredlist.org/>.
 
 A simple example could look like:
 
@@ -359,7 +359,7 @@ df8 <-
     query = "name"
   )
 ```
-``` {r, echo = FALSE}
+``` {r, echo = FALSE, eval = has_iucn_api_key, include = has_iucn_api_key}
 
 df8 <- 
   RL_threats(
@@ -371,7 +371,7 @@ df8 <-
   )
 
 ```
-``` {r, echo = FALSE, results = "asis"}
+``` {r, echo = FALSE, results = "asis", eval = has_iucn_api_key, include = has_iucn_api_key}
 
 knitr::kable(df8)
 
@@ -391,7 +391,7 @@ For more details see `?RL_threats()`.
 
 ### Exporting
 
-Whichever outputs want to be exported can then simply be exported as `.csv` files using:
+Export a result as a CSV file with:
 
 ``` {r, eval = FALSE}
 write.csv(

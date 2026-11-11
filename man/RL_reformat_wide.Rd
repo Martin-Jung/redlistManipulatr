@@ -2,18 +2,18 @@
 % Please edit documentation in R/RL_reformat_wide.R
 \name{RL_reformat_wide}
 \alias{RL_reformat_wide}
-\title{Reformat long format data to wide format}
+\title{Reformat long habitat data to wide format}
 \usage{
 RL_reformat_wide(x)
 }
 \arguments{
-\item{x}{A long format dataframe with one row per habitat category. As output by RL_reformat_long().}
+\item{x}{A long-format \code{data.frame} with one row per species-season-habitat combination, such as the output of \code{RL_reformat_long()}.}
 }
 \value{
-A dataframe in wide format (one column per habitat type).
+A wide-format \code{data.frame} with one column per habitat category.
 }
 \description{
-Reformat long format data (output by RL_reformat_long()) to wide format (needed for RL_code_fill() etc).
+Pivot long-format habitat data, such as the output of \code{RL_reformat_long()}, to wide format for functions such as \code{RL_code_fill()}.
 }
 \author{
 Matt Lewis, \email{matthewlewis896@gmail.com}

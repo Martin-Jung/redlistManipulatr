@@ -1,20 +1,21 @@
-#' Fetch Red List data
-#' @description Download Red List habitat and elevation data from the Red List API.
+#' Fetch Red List habitat and elevation data
+#' @description Retrieve habitat, seasonal, and elevation data for species from the IUCN Red List API.
 #' @author Matt Lewis, \email{matthewlewis896@@gmail.com}
 #'
-#' @param x List, vector, or dataframe with a column corresponding to binomial species names or IUCN Red List IDs.
-#' @param col.name Character string. Column name if x is a dataframe. Not needed if x is a list or vector.
-#' @param query Character string. 'name' if querying by species name; 'ID' if querying by IUCN Red List ID.
-#' @param key Character string. IUCN Red List API key. Defaults to `Sys.getenv("IUCN_REDLIST_KEY")`; set `IUCN_REDLIST_KEY` in your `.Renviron` file or pass a key explicitly.
-#' @param sleep_dur (optional) Numeric. Duration of sleep between API calls in seconds. Defaults to 2 seconds.
-#' @param subset (optional). Numeric. Specify proportion of x to run for between 0 and 1. Defaults to 1.
-#' @param parallel (optional) Logical. If TRUE uses multiple cores. Default is TRUE.
-#' @param num.cores (optional) Numeric. Specify number of cores to use if running in parallel. Default is number of CPU cores available - 1.
-#' @param verbose (optional) Numeric. If 0 gives no progress update, if 1 prints progress bar, if 2 prints 1 row per task completed. Default is 1.
+#' @param x A vector, list, or \code{data.frame} of species binomials or IUCN Red List IDs.
+#' @param col.name Column name containing species names or IDs when \code{x} is a \code{data.frame}. Not used for vectors or lists.
+#' @param query Lookup type: \code{"name"} to search by scientific name or \code{"ID"} to search by IUCN Red List ID.
+#' @param key IUCN Red List API key. Defaults to \code{Sys.getenv("IUCN_REDLIST_KEY")}. Set \code{IUCN_REDLIST_KEY} in your \code{.Renviron} file or pass a key explicitly. API keys are available through the account page at \url{https://api.iucnredlist.org/}.
+#' @param sleep_dur Number of seconds to wait between API calls. Defaults to 2.
+#' @param subset Proportion of \code{x} to process, from 0 to 1. Defaults to 1 (all entries).
+#' @param parallel Logical. If \code{TRUE}, use multiple cores. Defaults to \code{TRUE}.
+#' @param num.cores Number of cores to use when \code{parallel = TRUE}. Defaults to the number of available cores minus one.
+#' @param verbose Progress reporting level: \code{0} for none, \code{1} for a progress bar, or \code{2} for one line per completed record. Defaults to \code{1}.
 #'
-#' @details Each cell value of the output dataframe contains the pasted combination of habitat suitability and major importance, following the datasets \code{habitats} and \code{major_importance}.
-#' @details If the suitability value is missing for a habitat, this is coded as \code{999}. No habitat data available at all results in all habitats being coded as \code{66}.
-#' @return A dataframe in wide format (one column per habitat category and one row per species' season).
+#' @details Habitat suitability and major-importance codes are concatenated in each habitat cell; for example, \code{31} represents suitable habitat of major importance. See \code{habitats}, \code{suitability}, and \code{major_importance} for the classifications and codes.
+#'
+#' A missing suitability component is coded as \code{999} before it is combined with the major-importance code. If no habitat data are available for a species, all habitat columns are coded as \code{66}. Missing seasonal codes are represented by \code{999}. Missing minimum and maximum elevations are represented by \code{-99999} and \code{99999}, respectively.
+#' @return A wide-format \code{data.frame} with one row per species-season combination, habitat columns, and elevation fields.
 #' @export
 
 RL_fetch <-

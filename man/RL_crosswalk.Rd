@@ -2,7 +2,7 @@
 % Please edit documentation in R/RL_crosswalk.R
 \name{RL_crosswalk}
 \alias{RL_crosswalk}
-\title{Crosswalk habitat classes to a look-up table of other values}
+\title{Crosswalk habitat categories to another classification}
 \usage{
 RL_crosswalk(
   x,
@@ -13,26 +13,26 @@ RL_crosswalk(
 )
 }
 \arguments{
-\item{x}{A wide-format \code{dataframe} with one column per habitat category. As output by \code{RL_fetch()}.}
+\item{x}{A wide-format \code{data.frame}, such as the output of \code{RL_fetch()}, with one column per habitat category.}
 
-\item{lut}{(optional) A \code{dataframe} look-up table of values with two columns, one for new values, one for Red List habitat classes. This can be one-to-one, one-to-many, or many-to-many. If many-to-many, the highest suitability-major importance combination is selected as the preferred value for the new value - see \code{suitability_ordered}. See details for default.}
+\item{lut}{A look-up \code{data.frame} with columns for the new class names and Red List habitat codes. Mappings may be one-to-one, one-to-many, or many-to-many. Defaults to \code{hab_conversion_lut}.}
 
-\item{new.code.colname}{(optional) Character. What is the name of the column of \code{lut} with the new values in? Defaults to being the first column.}
+\item{new.code.colname}{Name of the \code{lut} column containing new class names. Defaults to the first column.}
 
-\item{old.code.colname}{(optional) Character. What is the name of the column of \code{lut} with the old (Red List habitat class) values in? Defaults to being the second column.}
+\item{old.code.colname}{Name of the \code{lut} column containing Red List habitat codes. Defaults to the second column.}
 
-\item{recode}{(optional) Character. Should values be recoded? "no" gives the most favourable suitability-major importance combinations, "one" codes all habitats with suitability-major importance values as 1, "colname" codes all habitats with suitability-major importance values as the column name value (the same as the new values in lut). Defaults to "no".}
+\item{recode}{How to recode habitat values: \code{"no"} retains the most favourable suitability-major importance code, \code{"one"} assigns \code{1}, and \code{"colname"} assigns the new column name. Defaults to \code{"no"}.}
 }
 \value{
-A \code{dataframe} in wide format (one column per new value of habitat type).
+A wide-format \code{data.frame} with habitat columns renamed to the new class names.
 }
 \description{
-Rename columns to new names from look-up table - e.g. iucn_1_1 becomes 110. Then optionally replaces suitability/major importance values with the column name or 1. Typically used to convert between habitat classes and land cover classes.
+Rename habitat columns using a look-up table and optionally recode their values. This is commonly used to map Red List habitat categories to land-cover classes.
 }
 \details{
-Use should follow that of RL_subset_acceptable() if only some habitat suitabilities/major importances are wanted and cell values are being recoded.
+If only selected suitability or major-importance values should be retained, apply \code{RL_subset_acceptable()} before this function.
 
-The default for \code{lut} is the \code{hab_conversion_lut} dataset which just converts habitat classes to integer values - e.g. 1.1 -> 110; 9.8.1 -> 981.
+The default \code{lut}, \code{hab_conversion_lut}, maps habitat codes to integer column names; for example, habitat \code{1.1} maps to \code{110} and \code{9.8.1} maps to \code{981}. When multiple habitat codes map to one new class and \code{recode = "no"}, the most favourable value is chosen according to \code{suitability_ordered}.
 }
 \author{
 Matt Lewis, \email{matthewlewis896@gmail.com}

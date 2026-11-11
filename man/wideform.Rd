@@ -2,20 +2,20 @@
 % Please edit documentation in R/wideform.R
 \name{wideform}
 \alias{wideform}
-\title{Wide format dataframe for RL_fetch() opt "habelev"}
+\title{Create the wide-format habitat template}
 \usage{
 wideform(habs = redlistManipulatr::habitats, seas = redlistManipulatr::seasons)
 }
 \arguments{
-\item{habs}{Dataframe of Red List habitat categories. Taken from redlistManipulatr::habitats.}
+\item{habs}{\code{data.frame} of Red List habitat categories, such as \code{redlistManipulatr::habitats}.}
 
-\item{seas}{Dataframe of Red List season codes Taken from redlistManipulatr::seasons.}
+\item{seas}{\code{data.frame} of Red List season codes, such as \code{redlistManipulatr::seasons}.}
 }
 \value{
-A dataframe in wide format (one column per habitat type and one row per species).
+A wide-format \code{data.frame} with one column per habitat category and one row per season.
 }
 \description{
-Internal Function. Makes a wide format dataframe to output RL_fetch() into according to the Red List level2 habitats. The number of rows corresponds to the number of seasons coded by the Red List.
+Internal helper that creates the wide-format structure used by \code{RL_fetch()}, with habitat columns and one row for each Red List season code.
 }
 \author{
 Matt Lewis, \email{matthewlewis896@gmail.com}

@@ -1,12 +1,12 @@
 #' Fetch Red List population information
-#' @description Retrieve structured population entries from full Red List assessment records.
-#' @param ids Numeric vector of IUCN assessment IDs, as used by `rredlist::rl_assessment_list()`.
-#' @param key Character string. IUCN Red List API key. Defaults to `Sys.getenv("IUCN_REDLIST_KEY")`; set `IUCN_REDLIST_KEY` in your `.Renviron` file or pass a key explicitly.
-#' @param include.documentation Logical. Include the population narrative from each assessment's documentation. Defaults to `FALSE`.
-#' @param wait_time Numeric. Seconds to wait between assessment requests. Defaults to 0.5, as recommended by `rredlist`.
-#' @param quiet Logical. Suppress the progress bar from `rredlist::rl_assessment_list()`. Defaults to `FALSE`.
-#' @return A dataframe with one row per assessment and columns for the requested population fields. Fields absent from an assessment are `NA`. Numeric population fields retain their original value and also have `_min` and `_max` columns; ranges such as `"100-200"` are split into those columns. If `include.documentation = TRUE`, a `documentation_population` column contains the population narrative.
-#' @details Population fields returned are current population trend, number of mature individuals, population severely fragmented, continuing decline of mature individuals, extreme fluctuations, number of subpopulations, continuing decline in subpopulations, extreme fluctuations in subpopulations, all individuals in one subpopulation, number of individuals in the largest subpopulation, and the percent change, reduction or increase, basis, and causes of reduction for past, future, and ongoing periods.
+#' @description Retrieve structured population fields from full IUCN Red List assessment records.
+#' @param ids Positive integer vector of IUCN assessment IDs, as accepted by \code{rredlist::rl_assessment_list()}.
+#' @param key IUCN Red List API key. Defaults to \code{Sys.getenv("IUCN_REDLIST_KEY")}. Set \code{IUCN_REDLIST_KEY} in your \code{.Renviron} file or pass a key explicitly.
+#' @param include.documentation Logical. If \code{TRUE}, include the population narrative from each assessment's documentation. Defaults to \code{FALSE}.
+#' @param wait_time Non-negative number of seconds to wait between assessment requests. Defaults to \code{0.5}.
+#' @param quiet Logical. If \code{TRUE}, suppress the progress bar from \code{rredlist::rl_assessment_list()}. Defaults to \code{FALSE}.
+#' @return A \code{data.frame} with one row per requested assessment ID and columns for the population fields. Fields absent from an assessment are \code{NA}. Numeric population fields retain their source value and also have \code{_min} and \code{_max} columns; range values such as \code{"100-200"} are split across those columns. If \code{include.documentation = TRUE}, the result also contains \code{documentation_population}.
+#' @details The returned fields cover population trend; mature individuals; fragmentation and decline; subpopulation counts and trends; and past, future, and ongoing population change, reduction, and causes. Population values are taken from supplementary information in each full assessment record.
 #' @export
 RL_population <- function(ids,
                           key = Sys.getenv("IUCN_REDLIST_KEY"),

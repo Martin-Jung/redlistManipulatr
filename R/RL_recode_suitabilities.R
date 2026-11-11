@@ -1,9 +1,9 @@
-#' Recode NA suitabilities to Suitable
-#' @description Recodes habitats coded on the Red List as NA (and pulled down by RL_fetch() as 999) to Suitable (3).
+#' Recode missing habitat suitability values as suitable
+#' @description Replace a missing suitability component (encoded as \code{999} in a habitat cell) with the suitable code \code{3}.
 #' @author Matt Lewis, \email{matthewlewis896@@gmail.com}
 #'
-#' @param x A wide format dataframe with one column per habitat category. As output by RL_fetch().
-#' @return A dataframe in wide format (one column per habitat type).
+#' @param x A wide-format \code{data.frame}, such as the output of \code{RL_fetch()}.
+#' @return A wide-format \code{data.frame} with the same rows and columns as \code{x}.
 #' @export
 
 RL_recode_suitabilities <-

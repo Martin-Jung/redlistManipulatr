@@ -1,10 +1,10 @@
-#' Recode NA seasons to Resident
-#' @description Recodes seasons coded on the Red List as NA (and pulled down by RL_fetch() as 999) to Resident (1).
+#' Recode missing seasons as resident
+#' @description Replace season codes of \code{999}, which represent missing seasonal information, with the resident season code \code{1}.
 #' @author Matt Lewis, \email{matthewlewis896@@gmail.com}
 #'
-#' @param x A wide format dataframe with one column per habitat category. As output by RL_fetch().
-#' @param combine.rows (optional) Logical. If a species ends up with multiple rows for a season due to recoding, should these rows be combined? If TRUE selects the highest ranked suitability-major importance combination. See \code{suitability_ordered}.Defaults to FALSE.
-#' @return A dataframe in wide format (one column per habitat type).
+#' @param x A wide-format \code{data.frame}, such as the output of \code{RL_fetch()}.
+#' @param combine.rows Logical. If recoding creates multiple rows for the same species and season, combine them by retaining the highest-ranked suitability-major importance value for each habitat. See \code{suitability_ordered}. Defaults to \code{FALSE}.
+#' @return A wide-format \code{data.frame}. If \code{combine.rows = TRUE}, duplicate Resident rows are combined.
 #' @export
 
 RL_recode_seasons <-

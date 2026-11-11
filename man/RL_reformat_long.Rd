@@ -2,23 +2,23 @@
 % Please edit documentation in R/RL_reformat_long.R
 \name{RL_reformat_long}
 \alias{RL_reformat_long}
-\title{Reformat wide format data to long format}
+\title{Reformat wide habitat data to long format}
 \usage{
 RL_reformat_long(x, na.rm = TRUE)
 }
 \arguments{
-\item{x}{A wide format dataframe with one column per habitat category. As output by RL_fetch() or RL_code_fill().}
+\item{x}{A wide-format \code{data.frame} with one column per habitat category, such as the output of \code{RL_fetch()} or \code{RL_code_fill()}.}
 
-\item{na.rm}{(optional). Logical. Remove NA rows to compress output. See Details. Defaults to TRUE.}
+\item{na.rm}{Logical. If \code{TRUE}, remove rows with missing or no habitat information. If \code{FALSE}, retain these rows. Defaults to \code{TRUE}.}
 }
 \value{
-A dataframe in long format (one row per habitat type).
+A long-format \code{data.frame} with one row per species-season-habitat combination and separate columns for habitat levels, suitability, and major importance.
 }
 \description{
-Reformat wide format data (they way RL_fetch() retrieves data) to long format.
+Pivot habitat columns from wide format, as returned by \code{RL_fetch()}, to long format.
 }
 \details{
-If \code{na.rm} is \code{TRUE} (the default) then rows lacking habitat information will be removed. On pivoting, all habitat columns are retained - even those with no information - meaning that the output has many NA rows where a species is not found at all in a habitat (e.g. polar bears in Hot Desert). This is normally undesirable, so these rows are removed by default. If you would like to keep these rows then set \code{na.rm} to \code{FALSE}.
+The pivot includes every habitat column, including categories with no information. With the default \code{na.rm = TRUE}, rows with \code{NA} or the no-data code \code{66} are removed. Set \code{na.rm = FALSE} to retain them.
 }
 \author{
 Matt Lewis, \email{matthewlewis896@gmail.com}

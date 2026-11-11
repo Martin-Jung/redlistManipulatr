@@ -2,15 +2,15 @@
 % Please edit documentation in R/packTest.R
 \name{packTest}
 \alias{packTest}
-\title{Check necessary packages are loaded}
+\title{Check that a required package is installed}
 \usage{
 packTest(pack)
 }
 \arguments{
-\item{pack}{Character. Package name.}
+\item{pack}{Package name as a character string.}
 }
 \description{
-Internal Function. Checks packages necessary for operation are loaded. Stops execution if not.
+Internal helper that stops execution when a package required by a function is unavailable.
 }
 \author{
 Matt Lewis, \email{matthewlewis896@gmail.com}

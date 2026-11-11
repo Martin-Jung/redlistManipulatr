@@ -2,7 +2,7 @@
 % Please edit documentation in R/threats_nopar.R
 \name{threats_nopar}
 \alias{threats_nopar}
-\title{Fetch Red List threats data (parallel)}
+\title{Fetch Red List threat data without parallel processing}
 \usage{
 threats_nopar(
   x,
@@ -14,23 +14,23 @@ threats_nopar(
 )
 }
 \arguments{
-\item{x}{Vector of species names or IDs.}
+\item{x}{Vector of species names or IUCN Red List IDs.}
 
 \item{key}{Character string. IUCN Red List API key. Defaults to \code{Sys.getenv("IUCN_REDLIST_KEY")}; set \code{IUCN_REDLIST_KEY} in your \code{.Renviron} file or pass a key explicitly.}
 
-\item{query}{Character string. 'name' if querying by species name; 'ID' if querying by IUCN Red List ID.}
+\item{query}{Lookup type: \code{"name"} for species names or \code{"ID"} for IUCN Red List IDs.}
 
-\item{subset}{(optional). Numeric. Specify proportion of x to run for between 0 and 1. Defaults to 1.}
+\item{subset}{Proportion of \code{x} to process, from 0 to 1.}
 
 \item{sleep_dur}{(optional) Numeric. Duration of sleep between API calls in seconds. Defaults to 2 seconds.}
 
-\item{verbose}{(optional) Numeric. If 0 gives no progress update, if 1 prints progress bar, if 2 prints 1 row per task completed. Default is 1.}
+\item{verbose}{Progress reporting level: \code{0} for none, \code{1} for a progress bar, or \code{2} for one line per completed record.}
 }
 \value{
-A dataframe in long format (one row per species-threat)
+A long-format \code{data.frame} with one row per species-threat combination.
 }
 \description{
-Download Red List threats data from the Red List API.
+Internal helper for the non-parallel path in \code{RL_threats()}.
 }
 \author{
 Matt Lewis, \email{matthewlewis896@gmail.com}

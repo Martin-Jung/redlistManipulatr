@@ -2,7 +2,7 @@
 % Please edit documentation in R/RL_code_fill.R
 \name{RL_code_fill}
 \alias{RL_code_fill}
-\title{Fill Out Level 1 or 2 Habitat Codes}
+\title{Fill missing Level 1 or Level 2 habitat codes}
 \usage{
 RL_code_fill(
   x,
@@ -15,32 +15,32 @@ RL_code_fill(
 )
 }
 \arguments{
-\item{x}{A wide format dataframe with one column per habitat category. As output by RL_fetch().}
+\item{x}{A wide-format \code{data.frame}, such as the output of \code{RL_fetch()}, with one column per habitat category.}
 
-\item{level1.recode}{(optional) Logical. If Level 2 habitat info exists, should the corresponding Level 1 habitat be given the same info? See Details. Default is TRUE.}
+\item{level1.recode}{Logical. If \code{TRUE}, fill a Level 1 category when one or more of its Level 2 categories has data. Defaults to \code{TRUE}.}
 
-\item{level2.recode}{(optional) Logical. If Level 1 habitat info exists, should the corresponding Level 2 habitats be given the same info? See Details. Default is TRUE.}
+\item{level2.recode}{Logical. If \code{TRUE}, fill Level 2 categories from a Level 1 category that has data. Defaults to \code{TRUE}.}
 
-\item{subset}{(optional). Numeric. Specify proportion of x to run for between 0 and 1. Defaults to 1.}
+\item{subset}{Numeric proportion of rows to process, from 0 to 1. Defaults to 1 (all rows).}
 
-\item{parallel}{(optional) Logical. If TRUE uses multiple cores. Default is TRUE.}
+\item{parallel}{Logical. If \code{TRUE}, use multiple cores. Defaults to \code{TRUE}.}
 
-\item{num.cores}{(optional) Numeric. Specify number of cores to use if running in parallel. Default is number of CPU cores available - 1.}
+\item{num.cores}{Number of cores to use when \code{parallel = TRUE}. Defaults to the number of available cores minus one.}
 
-\item{verbose}{(optional) Numeric. If 0 gives no progress update, if 1 prints progress bar, if 2 prints 1 row per task completed. Default is 1.}
+\item{verbose}{Progress reporting level: \code{0} for none, \code{1} for a progress bar, or \code{2} for one line per completed row. Defaults to \code{1}.}
 }
 \value{
-A dataframe in wide format (one column per habitat type and one row per species' season).
+A wide-format \code{data.frame}, with one row per species-season combination.
 }
 \description{
-Optionally fill out Level 2 habitat codes if Level 1 codes exist and vice versa.
+Fill parent Level 1 habitat codes from their Level 2 categories, or fill Level 2 categories from their Level 1 parent.
 }
 \details{
-The \code{level1.recode} parameter will fill upstream Level 1 habitat categories if any Level 2 categories have habitat information. e.g. if habitat category 2.1 (Dry Savanna) is suitable and of major importance (coded as 31), habitat category 2 (Savanna) will be filled with this info too.
+With \code{level1.recode = TRUE}, data in a Level 2 category are copied to its Level 1 parent. For example, a value of \code{31} in habitat 2.1 (Dry Savanna) is copied to habitat 2 (Savanna).
 
-Similarly, \code{level2.recode} will fill all downstream Level 2 habitat categories if the corresponding Level 1 category is filled. e.g. if if habitat category 2 (Savanna) is suitable and of major importance (coded as 31), habitat categories 2.1 (Dry Savanna) and 2.2 (Moist Savanna) will be given the same information.
+With \code{level2.recode = TRUE}, data in a Level 1 category are copied to its Level 2 categories. For example, a value of \code{31} in habitat 2 (Savanna) is copied to habitats 2.1 (Dry Savanna) and 2.2 (Moist Savanna).
 
-NOTE: Running this function multiple times will fill out Level 1/Level 2 habitats which only exist because of a previous function call. It is advisable only to run this function once.
+Run this function once on a dataset. Repeated calls can propagate values added by earlier calls.
 }
 \author{
 Matt Lewis, \email{matthewlewis896@gmail.com}

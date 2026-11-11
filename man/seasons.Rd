@@ -3,7 +3,7 @@
 \docType{data}
 \name{seasons}
 \alias{seasons}
-\title{IUCN Red List Seasonal Distribution Codes}
+\title{IUCN Red List seasonal distribution codes}
 \format{
 An object of class \code{"data.frame"}
 }
@@ -14,6 +14,6 @@ An object of class \code{"data.frame"}
 data(seasons)
 }
 \description{
-Definitions for the IUCN Red List's Seasonal Distribution Codes. Taken from the 'Mapping Standards and Data Quality for the IUCN Red List: Categories and Criteria.' Version 1.16
+Definitions of IUCN Red List seasonal distribution codes, from version 1.16 of the Mapping Standards and Data Quality for the IUCN Red List.
 }
 \keyword{datasets}

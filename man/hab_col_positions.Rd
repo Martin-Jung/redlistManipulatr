@@ -2,17 +2,17 @@
 % Please edit documentation in R/hab_col_positions.R
 \name{hab_col_positions}
 \alias{hab_col_positions}
-\title{Level 1 and Level2 habitat column positions}
+\title{Find Level 1 and Level 2 habitat columns}
 \usage{
 hab_col_positions(x = wideform())
 }
 \arguments{
-\item{x}{Dataframe with column names in the form iucn_n or iucn_n_n where n is an integer habitat code}
+\item{x}{\code{data.frame} with column names in the form \code{iucn_n} or \code{iucn_n_n}, where \code{n} is a numeric habitat code.}
 }
 \value{
-A list of column positions for level 1 and level 2 habitat categories
+A list containing the column positions for Level 1 and Level 2 habitat categories.
 }
 \description{
-Work out positions of level 1 and 2 columns from wide form data frame
+Identify the positions of Level 1 and Level 2 habitat columns in a wide-format dataset.
 }
 \keyword{internal}

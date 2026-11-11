@@ -1,6 +1,6 @@
-#' IUCN Red List Seasonal Distribution Codes
+#' IUCN Red List seasonal distribution codes
 #'
-#' @description Definitions for the IUCN Red List's Seasonal Distribution Codes. Taken from the 'Mapping Standards and Data Quality for the IUCN Red List: Categories and Criteria.' Version 1.16
+#' @description Definitions of IUCN Red List seasonal distribution codes, from version 1.16 of the Mapping Standards and Data Quality for the IUCN Red List.
 #'
 #' @docType data
 #'

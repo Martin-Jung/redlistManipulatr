@@ -1,8 +1,8 @@
-#' Check necessary packages are loaded
-#' @description Internal Function. Checks packages necessary for operation are loaded. Stops execution if not.
+#' Check that a required package is installed
+#' @description Internal helper that stops execution when a package required by a function is unavailable.
 #' @author Matt Lewis, \email{matthewlewis896@@gmail.com}
 #' @keywords internal
-#' @param pack Character. Package name.
+#' @param pack Package name as a character string.
 
 packTest <-
   function(

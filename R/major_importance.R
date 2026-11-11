@@ -1,6 +1,6 @@
-#' Nature Map Red List Habitat Major Importance Codes
+#' Habitat major-importance codes
 #'
-#' @description Codes for habitat major importance Somewhat arbitrarily created. Alter this data to alter functions.
+#' @description Codes and labels used to represent habitat major importance in concatenated habitat values. These package-specific codes can be changed to customize the related functions.
 #'
 #' @docType data
 #'

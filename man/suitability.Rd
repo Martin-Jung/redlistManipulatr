@@ -3,7 +3,7 @@
 \docType{data}
 \name{suitability}
 \alias{suitability}
-\title{Nature Map Red List Suitability Codes}
+\title{Habitat suitability codes}
 \format{
 An object of class \code{"data.frame"}
 }
@@ -11,6 +11,6 @@ An object of class \code{"data.frame"}
 data(suitability)
 }
 \description{
-Codes for habitat suitability. Somewhat arbitrarily created. Alter this data to alter functions.
+Codes and labels used for habitat suitability in concatenated habitat values. These package-specific codes can be changed to customize the related functions.
 }
 \keyword{datasets}

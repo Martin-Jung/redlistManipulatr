@@ -1,16 +1,16 @@
-#' Fetch Red List threats data (parallel)
-#' @description Download Red List threats data from the Red List API.
+#' Fetch Red List threat data without parallel processing
+#' @description Internal helper for the non-parallel path in \code{RL_threats()}.
 #' @author Matt Lewis, \email{matthewlewis896@@gmail.com}
 #' @keywords internal
 #'
-#' @param x Vector of species names or IDs.
-#' @param query Character string. 'name' if querying by species name; 'ID' if querying by IUCN Red List ID.
+#' @param x Vector of species names or IUCN Red List IDs.
+#' @param query Lookup type: \code{"name"} for species names or \code{"ID"} for IUCN Red List IDs.
 #' @param key Character string. IUCN Red List API key. Defaults to `Sys.getenv("IUCN_REDLIST_KEY")`; set `IUCN_REDLIST_KEY` in your `.Renviron` file or pass a key explicitly.
 #' @param sleep_dur (optional) Numeric. Duration of sleep between API calls in seconds. Defaults to 2 seconds.
-#' @param subset (optional). Numeric. Specify proportion of x to run for between 0 and 1. Defaults to 1.
-#' @param verbose (optional) Numeric. If 0 gives no progress update, if 1 prints progress bar, if 2 prints 1 row per task completed. Default is 1.
+#' @param subset Proportion of \code{x} to process, from 0 to 1.
+#' @param verbose Progress reporting level: \code{0} for none, \code{1} for a progress bar, or \code{2} for one line per completed record.
 #'
-#' @return A dataframe in long format (one row per species-threat)
+#' @return A long-format \code{data.frame} with one row per species-threat combination.
 
 threats_nopar <-
   function(x,

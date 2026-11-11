@@ -3,7 +3,7 @@
 \docType{data}
 \name{major_importance}
 \alias{major_importance}
-\title{Nature Map Red List Habitat Major Importance Codes}
+\title{Habitat major-importance codes}
 \format{
 An object of class \code{"data.frame"}
 }
@@ -11,6 +11,6 @@ An object of class \code{"data.frame"}
 data(major_importance)
 }
 \description{
-Codes for habitat major importance Somewhat arbitrarily created. Alter this data to alter functions.
+Codes and labels used to represent habitat major importance in concatenated habitat values. These package-specific codes can be changed to customize the related functions.
 }
 \keyword{datasets}

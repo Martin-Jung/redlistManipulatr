@@ -2,7 +2,7 @@
 % Please edit documentation in R/RL_subset_acceptable.R
 \name{RL_subset_acceptable}
 \alias{RL_subset_acceptable}
-\title{Subset to acceptable suitabilities and major importances of habitats}
+\title{Retain selected habitat suitability and major-importance codes}
 \usage{
 RL_subset_acceptable(
   x,
@@ -12,22 +12,22 @@ RL_subset_acceptable(
 )
 }
 \arguments{
-\item{x}{A wide format dataframe with one column per habitat category. As output by RL_fetch().}
+\item{x}{A wide-format \code{data.frame} with one column per habitat category, such as the output of \code{RL_fetch()}.}
 
-\item{acceptable_suitabilities}{(optional) A vector of suitabilities deemed acceptable. Must be in the form \code{c(3,2)}. See details. Defaults to accepting all.}
+\item{acceptable_suitabilities}{Numeric vector of suitability codes to retain, such as \code{c(3, 2)}. Defaults to \code{NA}, which retains all suitability values.}
 
-\item{acceptable_importances}{(optional) A vector of major importances deemed acceptable. Must be in the form \code{c(1,3)}. See details. Defaults to accepting all.}
+\item{acceptable_importances}{Numeric vector of major-importance codes to retain, such as \code{c(1, 3)}. Defaults to \code{NA}, which retains all major-importance values.}
 
-\item{na.rm}{(optional) Logical. If a row has all habitats recoded to NA, should it be removed? Default is TRUE.}
+\item{na.rm}{Logical. If \code{TRUE}, remove rows whose habitat values are all \code{NA} after filtering. Defaults to \code{TRUE}.}
 }
 \value{
-A dataframe in wide format (one column per habitat type).
+A wide-format \code{data.frame} with the same columns as \code{x}.
 }
 \description{
-Subset data to only retain desired suitabilities and major importances. Other suitabilities/major importances are recoded as NA. Rows containing only NA values can then be removed.
+Keep only habitat values that meet the selected suitability and major-importance criteria. Other values are replaced with \code{NA}; rows with no remaining habitat values can also be removed.
 }
 \details{
-See \code{suitability} and \code{major_importance} for code values corresponding to each suitability/major importance name.
+See \code{suitability} and \code{major_importance} for the code values and their meanings. A habitat value is retained only when it meets both filters; a filter set to \code{NA} accepts all values for that component.
 }
 \author{
 Matt Lewis, \email{matthewlewis896@gmail.com}

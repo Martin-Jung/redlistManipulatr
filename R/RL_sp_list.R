@@ -1,12 +1,13 @@
-#' Obtain list of all species on Red List
-#' @description Obtain a list and basic info about all species on the Red List. This function combines the current rredlist taxonomic summary endpoints.
+#' List species assessed on the IUCN Red List
+#' @description Retrieve the latest global assessment summary for species from the IUCN Red List API. The function combines the current kingdom-level summary endpoints.
 #' @author Matt Lewis, \email{matthewlewis896@@gmail.com}
 
-#' @param key Character string. IUCN Red List API key. Defaults to `Sys.getenv("IUCN_REDLIST_KEY")`; set `IUCN_REDLIST_KEY` in your `.Renviron` file or pass a key explicitly. Keys are available from the account page linked from https://api.iucnredlist.org/.
-#' @param retain.taxonomic.info (optional) Character. Options to retain all taxonomic information available from the API ("all"), only Kingdom and Class when supplied ("some"), or none ("none"). The current API summary provides Kingdom but not the other taxonomic ranks. The species name is always retained. Defaults to "some".
-#' @param retain.population (optional) Logical. Retain population information when supplied by the API. The current taxonomic summary endpoint does not provide this field. Defaults to FALSE.
-#' @param retain.category (optional) Logical. Retain the assessment category? Defaults to TRUE.
-#' @return A dataframe with one row per species containing the SIS taxon ID (column taxonid), scientific name (column binomial), Kingdom when available, and Red List category.
+#' @param key IUCN Red List API key. Defaults to \code{Sys.getenv("IUCN_REDLIST_KEY")}. Set \code{IUCN_REDLIST_KEY} in your \code{.Renviron} file or pass a key explicitly. API keys are available through the account page at \url{https://api.iucnredlist.org/}.
+#' @param retain.taxonomic.info Which available taxonomy fields to retain: \code{"all"}, \code{"some"} (Kingdom and Class, when supplied), or \code{"none"}. The current summary endpoint supplies Kingdom only. The taxon ID and scientific name are always retained. Defaults to \code{"some"}.
+#' @param retain.population Logical. Retain population information if supplied by the endpoint. The current summary endpoint does not provide this field, so requesting it produces a warning. Defaults to \code{FALSE}.
+#' @param retain.category Logical. Include the Red List assessment category. Defaults to \code{TRUE}.
+#' @return A \code{data.frame} with one row per assessment and, depending on the options and fields supplied by the API, columns for taxon ID (\code{taxonid}), Kingdom, scientific name (\code{binomial}), and category.
+#' @details This function returns the latest global summaries. For structured population fields from full assessment records, use \code{RL_population()} with assessment IDs.
 #' @export
 
 RL_sp_list <-

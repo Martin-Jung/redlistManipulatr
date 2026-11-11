@@ -13,22 +13,22 @@ RL_population(
 )
 }
 \arguments{
-\item{ids}{Numeric vector of IUCN assessment IDs, as used by \code{rredlist::rl_assessment_list()}.}
+\item{ids}{Positive integer vector of IUCN assessment IDs, as accepted by \code{rredlist::rl_assessment_list()}.}
 
-\item{key}{Character string. IUCN Red List API key. Defaults to \code{Sys.getenv("IUCN_REDLIST_KEY")}; set \code{IUCN_REDLIST_KEY} in your \code{.Renviron} file or pass a key explicitly.}
+\item{key}{IUCN Red List API key. Defaults to \code{Sys.getenv("IUCN_REDLIST_KEY")}. Set \code{IUCN_REDLIST_KEY} in your \code{.Renviron} file or pass a key explicitly.}
 
-\item{include.documentation}{Logical. Include the population narrative from each assessment's documentation. Defaults to \code{FALSE}.}
+\item{include.documentation}{Logical. If \code{TRUE}, include the population narrative from each assessment's documentation. Defaults to \code{FALSE}.}
 
-\item{wait_time}{Numeric. Seconds to wait between assessment requests. Defaults to 0.5, as recommended by \code{rredlist}.}
+\item{wait_time}{Non-negative number of seconds to wait between assessment requests. Defaults to \code{0.5}.}
 
-\item{quiet}{Logical. Suppress the progress bar from \code{rredlist::rl_assessment_list()}. Defaults to \code{FALSE}.}
+\item{quiet}{Logical. If \code{TRUE}, suppress the progress bar from \code{rredlist::rl_assessment_list()}. Defaults to \code{FALSE}.}
 }
 \value{
-A dataframe with one row per assessment and columns for the requested population fields. Fields absent from an assessment are \code{NA}. Numeric population fields retain their original value and also have \verb{_min} and \verb{_max} columns; ranges such as \code{"100-200"} are split into those columns. If \code{include.documentation = TRUE}, a \code{documentation_population} column contains the population narrative.
+A \code{data.frame} with one row per requested assessment ID and columns for the population fields. Fields absent from an assessment are \code{NA}. Numeric population fields retain their source value and also have \code{_min} and \code{_max} columns; range values such as \code{"100-200"} are split across those columns. If \code{include.documentation = TRUE}, the result also contains \code{documentation_population}.
 }
 \description{
-Retrieve structured population entries from full Red List assessment records.
+Retrieve structured population fields from full IUCN Red List assessment records.
 }
 \details{
-Population fields returned are current population trend, number of mature individuals, population severely fragmented, continuing decline of mature individuals, extreme fluctuations, number of subpopulations, continuing decline in subpopulations, extreme fluctuations in subpopulations, all individuals in one subpopulation, number of individuals in the largest subpopulation, and the percent change, reduction or increase, basis, and causes of reduction for past, future, and ongoing periods.
+The returned fields cover population trend; mature individuals; fragmentation and decline; subpopulation counts and trends; and past, future, and ongoing population change, reduction, and causes. Population values are taken from supplementary information in each full assessment record.
 }

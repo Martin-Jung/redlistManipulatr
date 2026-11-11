@@ -2,7 +2,7 @@
 % Please edit documentation in R/fetch_par.R
 \name{fetch_par}
 \alias{fetch_par}
-\title{Fetch Red List data (parallel)}
+\title{Fetch Red List habitat and elevation data in parallel}
 \usage{
 fetch_par(
   x,
@@ -15,25 +15,25 @@ fetch_par(
 )
 }
 \arguments{
-\item{x}{Vector of species names or IDs.}
+\item{x}{Vector of species names or IUCN Red List IDs.}
 
-\item{key}{Character string. IUCN Red List API key. Defaults to \code{Sys.getenv("IUCN_REDLIST_KEY")}; set \code{IUCN_REDLIST_KEY} in your \code{.Renviron} file or pass a key explicitly.}
+\item{key}{IUCN Red List API key, normally supplied by \code{RL_fetch()}.}
 
-\item{query}{Character string. 'name' if querying by species name; 'ID' if querying by IUCN Red List ID.}
+\item{query}{Lookup type: \code{"name"} for species names or \code{"ID"} for IUCN Red List IDs.}
 
-\item{subset}{(optional). Numeric. Specify proportion of x to run for between 0 and 1. Defaults to 1.}
+\item{subset}{Proportion of \code{x} to process, from 0 to 1.}
 
-\item{sleep_dur}{(optional) Numeric. Duration of sleep between API calls in seconds. Defaults to 2 seconds.}
+\item{sleep_dur}{Number of seconds to wait between API calls.}
 
-\item{num.cores}{(optional) Numeric. Specify number of cores to use if running in parallel. Default is number of CPU cores available - 1.}
+\item{num.cores}{Number of cores to use.}
 
-\item{verbose}{(optional) Numeric. If 0 gives no progress update, if 1 prints progress bar, if 2 prints 1 row per task completed. Default is 1.}
+\item{verbose}{Progress reporting level: \code{0} for none, \code{1} for a progress bar, or \code{2} for one line per completed record.}
 }
 \value{
-A dataframe in wide format (one column per habitat type and one row per species' season).
+A wide-format \code{data.frame} with one row per species-season combination.
 }
 \description{
-Download Red List habitat and elevation data from the Red List API.
+Internal helper for the parallel path in \code{RL_fetch()}.
 }
 \author{
 Matt Lewis, \email{matthewlewis896@gmail.com}

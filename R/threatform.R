@@ -1,10 +1,10 @@
-#' Long format dataframe for RL_threats
-#' @description Internal Function. Makes a long format dataframe to output RL_threats() into according to the Red List threats.
+#' Build the long-format threat output
+#' @description Internal helper that creates the threat columns used in the output of \code{RL_threats()}.
 #' @author Matt Lewis, \email{matthewlewis896@@gmail.com}
 #' @keywords internal
-#' @param threats Dataframe of Red List threat categories. Taken from redlistManipulatr::threats
+#' @param threats \code{data.frame} of Red List threat categories, such as \code{redlistManipulatr::threats}.
 #'
-#' @return A dataframe in long format (one row per threat-species combination).
+#' @return A long-format \code{data.frame} with one row per species-threat combination.
 
 
 threatform <-

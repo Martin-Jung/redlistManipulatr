@@ -2,27 +2,24 @@
 % Please edit documentation in R/RL_elevation_check.R
 \name{RL_elevation_check}
 \alias{RL_elevation_check}
-\title{Checks min/max elevations and recodes if min >= max}
+\title{Check and recode elevation ranges}
 \usage{
 RL_elevation_check(x, recode_val, equal_to = TRUE, verbose = FALSE)
 }
 \arguments{
-\item{x}{A \code{data.frame} in wide or long form, as output by \code{RL_fetch()} and \code{RL_reformat_long()} respectively.}
+\item{x}{A wide- or long-format \code{data.frame}, such as the output of \code{RL_fetch()} or \code{RL_reformat_long()}.}
 
-\item{recode_val}{A \code{numeric} vector of length 1 or 2 specifying the recode values for minimum and maximum elevation values if they are incorrect. Defaults to \code{c(-99999, 99999)}. \code{NA} is also a suitable input.}
+\item{recode_val}{Numeric vector of length one or two giving replacement minimum and maximum elevations. Defaults to \code{c(-99999, 99999)}. A single value is used for both columns; \code{NA} is also accepted.}
 
-\item{equal_to}{A \code{logical} input. Should cases where min == max elevation also be recoded? Defaults to \code{TRUE}.}
+\item{equal_to}{Logical. If \code{TRUE}, recode rows where minimum elevation is greater than or equal to maximum elevation. If \code{FALSE}, recode only when minimum is greater. Defaults to \code{TRUE}.}
 
-\item{verbose}{(optional) A \code{logical} input. Should species with incorrect elevation values be printed out? Defaults to \code{FALSE}.}
+\item{verbose}{Logical. If \code{TRUE}, print the species whose elevations were recoded. Defaults to \code{FALSE}.}
 }
 \value{
-A \code{data.frame} in the same format as the input.
+A \code{data.frame} in the same format as \code{x}.
 }
 \description{
-Checks all species' elevations and if min >= max recodes min to -99999 and max to 99999. Other options possible, see details.
-}
-\details{
-\code{recode_val} allows recoding to other values than -99999 and +99999. \code{equal_to} allows changing of min >= max to min > max only.
+Find rows where minimum elevation is greater than (or, by default, equal to) maximum elevation and replace the invalid range.
 }
 \author{
 Matt Lewis, \email{matthewlewis896@gmail.com}

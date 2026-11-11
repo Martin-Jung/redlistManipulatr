@@ -17,7 +17,7 @@ Authors@R: c(
             role = "aut",
             email = "andy.arnell@unep-wcmc.org",
             comment = c(ORCID = "0000-0002-3360-5861")))
-Description: A collection of functions used to pull and manipulate IUCN Red List habitat and elevation data.
+Description: Functions for retrieving and manipulating IUCN Red List habitat, elevation, threat, and population data.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Language: en-GB

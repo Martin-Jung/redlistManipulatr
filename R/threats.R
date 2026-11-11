@@ -1,6 +1,6 @@
-#' IUCN Red List Threat Categories
+#' IUCN Red List threat categories
 #'
-#' @description Data from the IUCN Red List's Threat Classification (Version 3.2) using the December 2012 draft working document.
+#' @description Threat categories from the IUCN Red List Threat Classification, version 3.2, based on the December 2012 draft working document.
 #'
 #' @docType data
 #'

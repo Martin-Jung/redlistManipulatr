@@ -1,9 +1,9 @@
-#' Reformat long format data to wide format
-#' @description Reformat long format data (output by RL_reformat_long()) to wide format (needed for RL_code_fill() etc).
+#' Reformat long habitat data to wide format
+#' @description Pivot long-format habitat data, such as the output of \code{RL_reformat_long()}, to wide format for functions such as \code{RL_code_fill()}.
 #' @author Matt Lewis, \email{matthewlewis896@@gmail.com}
 #'
-#' @param x A long format dataframe with one row per habitat category. As output by RL_reformat_long().
-#' @return A dataframe in wide format (one column per habitat type).
+#' @param x A long-format \code{data.frame} with one row per species-season-habitat combination, such as the output of \code{RL_reformat_long()}.
+#' @return A wide-format \code{data.frame} with one column per habitat category.
 #' @export
 
 RL_reformat_wide <-

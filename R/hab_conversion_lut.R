@@ -1,6 +1,6 @@
-#' IUCN Red List Habitat Category New Name Look-up Table
+#' Habitat category conversion look-up table
 #'
-#' @description Look-up table for converting IUCN Habitat categories to new integer names.
+#' @description Maps IUCN Red List habitat codes to integer column names for use with \code{RL_crosswalk()}.
 #'
 #' @docType data
 #'

@@ -1,18 +1,17 @@
-#' Fill Out Level 1 or 2 Habitat Codes
-#' @description Optionally fill out Level 2 habitat codes if Level 1 codes exist and vice versa.
+#' Fill missing Level 1 or Level 2 habitat codes in parallel
+#' @description Internal parallel helper for \code{RL_code_fill()}.
 #' @author Matt Lewis, \email{matthewlewis896@@gmail.com}
 #' @keywords internal
 #'
-#' @param x A wide format dataframe with one column per habitat category. As output by RL_fetch().
-#' @param level1.recode (optional) Logical. If Level 2 habitat info exists, should the corresponding Level 1 habitat be given the same info? See Details. Default is TRUE.
-#' @param level2.recode (optional) Logical. If Level 1 habitat info exists, should the corresponding Level 2 habitats be given the same info? See Details. Default is TRUE.
-#' @param subset (optional). Numeric. Specify proportion of x to run for between 0 and 1. Defaults to 1.
-#' @param num.cores (optional) Numeric. Specify number of cores to use if running in parallel. Default is number of CPU cores available - 1.
-#' @param verbose (optional) Numeric. If 0 gives no progress update, if 1 prints progress bar, if 2 prints 1 row per task completed. Default is 1.
+#' @param x A wide-format \code{data.frame} with one column per habitat category.
+#' @param level1.recode Logical. If \code{TRUE}, fill Level 1 categories from their Level 2 categories.
+#' @param level2.recode Logical. If \code{TRUE}, fill Level 2 categories from their Level 1 parent.
+#' @param subset Proportion of rows to process, from 0 to 1.
+#' @param num.cores Number of cores to use.
+#' @param verbose Progress reporting level: \code{0} for none, \code{1} for a progress bar, or \code{2} for one line per completed row.
 #'
-#' @details The \code{level1.recode} parameter will fill upstream Level 1 habitat categories if any Level 2 categories have habitat information. e.g. if habitat category 2.1 (Dry Savanna) is suitable and of major importance (coded as 31), habitat category 2 (Savanna) will be filled with this info too.
-#' @details Similarly, \code{level2.recode} will fill all downstream Level 2 habitat categories if the corresponding Level 1 category is filled. e.g. if if habitat category 2 (Savanna) is suitable and of major importance (coded as 31), habitat categories 2.1 (Dry Savanna) and 2.2 (Moist Savanna) will be given the same information.
-#' @return A dataframe in wide format (one column per habitat type and one row per species' season).
+#' @details A child category can supply its value to its Level 1 parent; a Level 1 value can also be copied to its Level 2 categories.
+#' @return A wide-format \code{data.frame} with one row per species-season combination.
 
 code_fill_par <-
   function(x,

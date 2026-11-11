@@ -3,7 +3,7 @@
 \docType{data}
 \name{hab_conversion_lut}
 \alias{hab_conversion_lut}
-\title{IUCN Red List Habitat Category New Name Look-up Table}
+\title{Habitat category conversion look-up table}
 \format{
 An object of class \code{"data.frame"}
 }
@@ -11,6 +11,6 @@ An object of class \code{"data.frame"}
 data(hab_conversion_lut)
 }
 \description{
-Look-up table for converting IUCN Habitat categories to new integer names.
+Maps IUCN Red List habitat codes to integer column names for use with \code{RL_crosswalk()}.
 }
 \keyword{datasets}

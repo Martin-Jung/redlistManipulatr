@@ -3,7 +3,7 @@
 \docType{data}
 \name{suitability_ordered}
 \alias{suitability_ordered}
-\title{Nature Map Red List Suitability/Major Importance Code Hierarchy}
+\title{Habitat suitability and major-importance ranking}
 \format{
 An object of class \code{"data.frame"}
 }
@@ -11,6 +11,6 @@ An object of class \code{"data.frame"}
 data(suitability_ordered)
 }
 \description{
-Hierarchy of suitability-major importance codes (from first to last). Used internally.
+Suitability-major importance codes ordered from most to least preferred. Functions use this ranking to choose among competing values.
 }
 \keyword{datasets}

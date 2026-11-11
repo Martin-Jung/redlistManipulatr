@@ -3,7 +3,7 @@
 \docType{data}
 \name{threats}
 \alias{threats}
-\title{IUCN Red List Threat Categories}
+\title{IUCN Red List threat categories}
 \format{
 An object of class \code{"data.frame"}
 }
@@ -14,6 +14,6 @@ An object of class \code{"data.frame"}
 data(threats)
 }
 \description{
-Data from the IUCN Red List's Threat Classification (Version 3.2) using the December 2012 draft working document.
+Threat categories from the IUCN Red List Threat Classification, version 3.2, based on the December 2012 draft working document.
 }
 \keyword{datasets}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/RL_threats.R
 \name{RL_threats}
 \alias{RL_threats}
-\title{Fetch Red List threats data}
+\title{Fetch Red List threat data}
 \usage{
 RL_threats(
   x,
@@ -17,32 +17,32 @@ RL_threats(
 )
 }
 \arguments{
-\item{x}{List, vector, or dataframe with a column corresponding to binomial species names or IUCN Red List IDs.}
+\item{x}{A vector, list, or \code{data.frame} of species binomials or IUCN Red List IDs.}
 
-\item{col.name}{Character string. Column name if x is a dataframe. Not needed if x is a list or vector.}
+\item{col.name}{Column name containing species names or IDs when \code{x} is a \code{data.frame}. Not used for vectors or lists.}
 
-\item{key}{Character string. IUCN Red List API key. Defaults to \code{Sys.getenv("IUCN_REDLIST_KEY")}; set \code{IUCN_REDLIST_KEY} in your \code{.Renviron} file or pass a key explicitly.}
+\item{key}{IUCN Red List API key. Defaults to \code{Sys.getenv("IUCN_REDLIST_KEY")}. Set \code{IUCN_REDLIST_KEY} in your \code{.Renviron} file or pass a key explicitly. API keys are available through the account page at \url{https://api.iucnredlist.org/}.}
 
-\item{query}{Character string. 'name' if querying by species name; 'ID' if querying by IUCN Red List ID.}
+\item{query}{Lookup type: \code{"name"} to search by scientific name or \code{"ID"} to search by IUCN Red List ID.}
 
-\item{subset}{(optional). Numeric. Specify proportion of x to run for between 0 and 1. Defaults to 1.}
+\item{subset}{Proportion of \code{x} to process, from 0 to 1. Defaults to 1 (all entries).}
 
-\item{sleep_dur}{(optional) Numeric. Duration of sleep between API calls in seconds. Defaults to 2 seconds.}
+\item{sleep_dur}{Number of seconds to wait between API calls. Defaults to 2.}
 
-\item{parallel}{(optional) Logical. If TRUE uses multiple cores. Default is TRUE.}
+\item{parallel}{Logical. If \code{TRUE}, use multiple cores. Defaults to \code{TRUE}.}
 
-\item{num.cores}{(optional) Numeric. Specify number of cores to use if running in parallel. Default is number of CPU cores available - 1.}
+\item{num.cores}{Number of cores to use when \code{parallel = TRUE}. Defaults to the number of available cores minus one.}
 
-\item{verbose}{(optional) Numeric. If 0 gives no progress update, if 1 prints progress bar, if 2 prints 1 row per task completed. Default is 1.}
+\item{verbose}{Progress reporting level: \code{0} for none, \code{1} for a progress bar, or \code{2} for one line per completed record. Defaults to \code{1}.}
 }
 \value{
-A dataframe in long format (one row per species-threat combination).
+A long-format \code{data.frame} with one row per species-threat combination.
 }
 \description{
-Download Red List threats data from the Red List API.
+Retrieve threat information for species from the IUCN Red List API.
 }
 \details{
-A code value of "999" indicates that no information for that species could be found.
+A threat code of \code{999} indicates that no threat information was available for the species.
 }
 \author{
 Matt Lewis, \email{matthewlewis896@gmail.com}
