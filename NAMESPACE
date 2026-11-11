@@ -18,9 +18,13 @@ export(RL_threats)
 export(rnorm)
 export(setTxtProgressBar)
 export(txtProgressBar)
-importFrom(foreach,"%do%")
-importFrom(foreach,"%dopar%")
+importFrom(foreach,
+  "%do%",
+  "%dopar%"
+)
 importFrom(magrittr,"%>%")
 importFrom(stats,rnorm)
-importFrom(utils,setTxtProgressBar)
-importFrom(utils,txtProgressBar)
+importFrom(utils,
+  setTxtProgressBar,
+  txtProgressBar
+)

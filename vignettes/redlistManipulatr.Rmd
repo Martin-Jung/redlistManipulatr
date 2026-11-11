@@ -26,19 +26,18 @@ library(redlistManipulatr)
 
 ### Getting a list of all species on the Red List
 
-`RL_sp_list()` obtains a list of all species on the Red List API, taxonomic info, and their assessment category. This is a wrapper function around `rredlist::rl_sp()` to get all species listed. 
+`RL_sp_list()` obtains the latest global assessment summary for species listed by the Red List API. It combines the current `rredlist` kingdom endpoints. The API summary includes the SIS taxon ID, scientific name, Kingdom, and assessment category; it does not include the other taxonomic ranks or population information returned by the retired endpoint.
 
-It requires an API key (`key`). These are obtainable from https://apiv3.iucnredlist.org/api/v3/token.
+It reads the API key by default from `Sys.getenv("IUCN_REDLIST_KEY")`. Add `IUCN_REDLIST_KEY=your.api.key` to your `.Renviron` file, or pass `key` explicitly. Keys are available from the account page linked from https://api.iucnredlist.org/.
 
 Optional parameters `retain.population` and `retain.category` allow you to retain the species' population info and assessment category respectively.
 
-`retain.taxonomic.info` allows you to keep all of the taxonomic info (`all`), only Kingdom and Class (`some`) or none (`none`).
+`retain.taxonomic.info` controls whether available taxonomic information is retained: all available fields (`all`), Kingdom and Class when supplied (`some`), or no taxonomy fields (`none`). The current summary endpoint supplies Kingdom only.
 
 ``` {r, eval = FALSE}
 
 sp_list <-
   RL_sp_list(
-    key = "your.api.key",
     retain.taxonomic.info = "some",
     retain.population = FALSE,
     retain.category = TRUE
@@ -49,7 +48,6 @@ sp_list <-
 ``` {r, echo = FALSE}
 sp_list <-
   RL_sp_list(
-    key = "bcdf6849b4e6df1e0cecaf68490770dff7406cca9ae953a75174947117dd8d79",
     retain.taxonomic.info = "some",
     retain.population = FALSE,
     retain.category = TRUE
@@ -68,7 +66,7 @@ knitr::kable(sp_list[1:10,])
 
 Species' names or IDs are supplied using the parameter `x`. `x` can be a `vector`, `list`, or `dataframe` of species' names or IUCN IDs (specify which using the parameter `query`). If `x` is a `dataframe`, the additional parameter `col.name` is needed to specify the column name of the species' names/IDs.
 
-An API key for the Red List (`key`) must also be supplied. These are obtainable from https://apiv3.iucnredlist.org/api/v3/token.
+The methods read the Red List API key by default from `Sys.getenv("IUCN_REDLIST_KEY")`. Add `IUCN_REDLIST_KEY=your.api.key` to your `.Renviron` file, or pass `key` explicitly. Keys are available from the account page linked from https://api.iucnredlist.org/.
 
 A simple example could look like:
 
@@ -82,8 +80,7 @@ df <-
         "Parus major",
         "Pinus oocarpa"
       ),
-    query = "name",
-    key = "your.api.key"
+    query = "name"
   )
 ```
 ``` {r, echo = FALSE}
@@ -96,8 +93,7 @@ df <-
         "Parus major",
         "Pinus oocarpa"
       ),
-    query = "name",
-    key = "bcdf6849b4e6df1e0cecaf68490770dff7406cca9ae953a75174947117dd8d79"
+    query = "name"
   )
 
 ```
@@ -343,7 +339,7 @@ knitr::kable(df7[,])
 
 Species' names or IDs are supplied using the parameter `x`. `x` can be a `vector`, `list`, or `dataframe` of species' names or IUCN IDs (specify which using the parameter `query`). If `x` is a `dataframe`, the additional parameter `col.name` is needed to specify the column name of the species' names/IDs.
 
-An API key for the Red List (`key`) must also be supplied. These are obtainable from https://apiv3.iucnredlist.org/api/v3/token.
+The methods read the Red List API key by default from `Sys.getenv("IUCN_REDLIST_KEY")`. Add `IUCN_REDLIST_KEY=your.api.key` to your `.Renviron` file, or pass `key` explicitly. Keys are available from the account page linked from https://api.iucnredlist.org/.
 
 A simple example could look like:
 
@@ -355,8 +351,7 @@ df8 <-
       c(
         "Panthera leo"
       ),
-    query = "name",
-    key = "your.api.key"
+    query = "name"
   )
 ```
 ``` {r, echo = FALSE}
@@ -367,8 +362,7 @@ df8 <-
       c(
         "Panthera leo"
       ),
-    query = "name",
-    key = "bcdf6849b4e6df1e0cecaf68490770dff7406cca9ae953a75174947117dd8d79"
+    query = "name"
   )
 
 ```

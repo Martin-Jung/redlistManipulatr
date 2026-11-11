@@ -4,12 +4,19 @@
 \alias{fetch_nopar}
 \title{Fetch Red List data (non-parallel)}
 \usage{
-fetch_nopar(x, key, query, subset, sleep_dur, verbose)
+fetch_nopar(
+  x,
+  key = Sys.getenv("IUCN_REDLIST_KEY"),
+  query,
+  subset,
+  sleep_dur,
+  verbose
+)
 }
 \arguments{
 \item{x}{Vector of species names or IDs.}
 
-\item{key}{Character string. IUCN Red List API key - available from https://apiv3.iucnredlist.org/api/v3/token}
+\item{key}{Character string. IUCN Red List API key. Defaults to \code{Sys.getenv("IUCN_REDLIST_KEY")}; set \code{IUCN_REDLIST_KEY} in your \code{.Renviron} file or pass a key explicitly.}
 
 \item{query}{Character string. 'name' if querying by species name; 'ID' if querying by IUCN Red List ID.}
 

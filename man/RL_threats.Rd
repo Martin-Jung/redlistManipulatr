@@ -7,7 +7,7 @@
 RL_threats(
   x,
   col.name,
-  key,
+  key = Sys.getenv("IUCN_REDLIST_KEY"),
   query,
   subset = 1,
   sleep_dur = 2,
@@ -21,7 +21,7 @@ RL_threats(
 
 \item{col.name}{Character string. Column name if x is a dataframe. Not needed if x is a list or vector.}
 
-\item{key}{Character string. IUCN Red List API key - available from https://apiv3.iucnredlist.org/api/v3/token}
+\item{key}{Character string. IUCN Red List API key. Defaults to \code{Sys.getenv("IUCN_REDLIST_KEY")}; set \code{IUCN_REDLIST_KEY} in your \code{.Renviron} file or pass a key explicitly.}
 
 \item{query}{Character string. 'name' if querying by species name; 'ID' if querying by IUCN Red List ID.}
 

@@ -5,26 +5,26 @@
 \title{Obtain list of all species on Red List}
 \usage{
 RL_sp_list(
-  key,
+  key = Sys.getenv("IUCN_REDLIST_KEY"),
   retain.taxonomic.info = "some",
   retain.population = FALSE,
   retain.category = TRUE
 )
 }
 \arguments{
-\item{key}{Character string. IUCN Red List API key - available from https://apiv3.iucnredlist.org/api/v3/token}
+\item{key}{Character string. IUCN Red List API key. Defaults to \code{Sys.getenv("IUCN_REDLIST_KEY")}; set \code{IUCN_REDLIST_KEY} in your \code{.Renviron} file or pass a key explicitly. Keys are available from the account page linked from https://api.iucnredlist.org/.}
 
-\item{retain.taxonomic.info}{(optional) Character. Options to retain all of the taxonomic info columns ("all"), only Kingdom and Class ("some"), or none ("none"). If "none", species binomial name is still provided. Defaults to "some".}
+\item{retain.taxonomic.info}{(optional) Character. Options to retain all taxonomic information available from the API ("all"), only Kingdom and Class when supplied ("some"), or none ("none"). The current API summary provides Kingdom but not the other taxonomic ranks. The species name is always retained. Defaults to "some".}
 
-\item{retain.population}{(optional) Logical. Retain the population information? Defaults to FALSE.}
+\item{retain.population}{(optional) Logical. Retain population information when supplied by the API. The current taxonomic summary endpoint does not provide this field. Defaults to FALSE.}
 
 \item{retain.category}{(optional) Logical. Retain the assessment category? Defaults to TRUE.}
 }
 \value{
-A dataframe with one row per species containing IUCN ID (column taxonid), taxonomic information, and Red List category.
+A dataframe with one row per species containing the SIS taxon ID (column taxonid), scientific name (column binomial), Kingdom when available, and Red List category.
 }
 \description{
-Obtain a list and basic info about all species on the Red List. This is a wrapper function for rredlist::rl_sp() used for all species.
+Obtain a list and basic info about all species on the Red List. This function combines the current rredlist taxonomic summary endpoints.
 }
 \author{
 Matt Lewis, \email{matthewlewis896@gmail.com}

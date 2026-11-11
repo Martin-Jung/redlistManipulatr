@@ -5,7 +5,7 @@
 #' @param x List, vector, or dataframe with a column corresponding to binomial species names or IUCN Red List IDs.
 #' @param col.name Character string. Column name if x is a dataframe. Not needed if x is a list or vector.
 #' @param query Character string. 'name' if querying by species name; 'ID' if querying by IUCN Red List ID.
-#' @param key Character string. IUCN Red List API key - available from https://apiv3.iucnredlist.org/api/v3/token
+#' @param key Character string. IUCN Red List API key. Defaults to `Sys.getenv("IUCN_REDLIST_KEY")`; set `IUCN_REDLIST_KEY` in your `.Renviron` file or pass a key explicitly.
 #' @param sleep_dur (optional) Numeric. Duration of sleep between API calls in seconds. Defaults to 2 seconds.
 #' @param subset (optional). Numeric. Specify proportion of x to run for between 0 and 1. Defaults to 1.
 #' @param parallel (optional) Logical. If TRUE uses multiple cores. Default is TRUE.
@@ -18,7 +18,7 @@
 RL_threats <-
   function(x,
            col.name,
-           key,
+           key = Sys.getenv("IUCN_REDLIST_KEY"),
            query,
            subset = 1,
            sleep_dur = 2,
@@ -31,8 +31,8 @@ RL_threats <-
     packTest("rredlist")
 
     # Testing if API key is valid.
-    if(is.character(key) == F){
-      stop("Please supply a valid API key. API keys should be provided as a character string.")
+    if(!is.character(key) || length(key) != 1L || is.na(key) || !nzchar(key)){
+      stop("Please supply a valid API key or set IUCN_REDLIST_KEY in your .Renviron file.")
     }
     # Testing if sleep duration is valid
     if(is.numeric(sleep_dur) == F){

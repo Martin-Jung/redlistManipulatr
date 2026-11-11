@@ -5,7 +5,7 @@
 #'
 #' @param x Vector of species names or IDs.
 #' @param query Character string. 'name' if querying by species name; 'ID' if querying by IUCN Red List ID.
-#' @param key Character string. IUCN Red List API key - available from https://apiv3.iucnredlist.org/api/v3/token
+#' @param key Character string. IUCN Red List API key. Defaults to `Sys.getenv("IUCN_REDLIST_KEY")`; set `IUCN_REDLIST_KEY` in your `.Renviron` file or pass a key explicitly.
 #' @param sleep_dur (optional) Numeric. Duration of sleep between API calls in seconds. Defaults to 2 seconds.
 #' @param subset (optional). Numeric. Specify proportion of x to run for between 0 and 1. Defaults to 1.
 #' @param verbose (optional) Numeric. If 0 gives no progress update, if 1 prints progress bar, if 2 prints 1 row per task completed. Default is 1.
@@ -14,7 +14,7 @@
 
 fetch_nopar <-
   function(x,
-           key,
+           key = Sys.getenv("IUCN_REDLIST_KEY"),
            query,
            subset,
            sleep_dur,
