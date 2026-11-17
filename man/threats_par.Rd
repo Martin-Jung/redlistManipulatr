@@ -15,11 +15,11 @@ threats_par(
 )
 }
 \arguments{
-\item{x}{Vector of species names or IUCN Red List IDs.}
+\item{x}{Vector of species names or IUCN assessment IDs.}
 
 \item{key}{Character string. IUCN Red List API key. Defaults to \code{Sys.getenv("IUCN_REDLIST_KEY")}; set \code{IUCN_REDLIST_KEY} in your \code{.Renviron} file or pass a key explicitly.}
 
-\item{query}{Lookup type: \code{"name"} for species names or \code{"ID"} for IUCN Red List IDs.}
+\item{query}{Lookup type: \code{"name"} for species names or \code{"ID"} for IUCN assessment IDs.}
 
 \item{subset}{Proportion of \code{x} to process, from 0 to 1.}
 

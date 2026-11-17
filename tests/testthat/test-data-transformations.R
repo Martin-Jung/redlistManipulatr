@@ -1,7 +1,10 @@
 test_that("elevation check replaces invalid ranges", {
+  skip_if_no_iucn_api_key()
+
   x <- data.frame(
-    iucn_id = c(1, 2),
-    binomial = c("Species A", "Species B"),
+    iucn_id = c(1, 1),
+    binomial = c("Test species", "Test species"),
+    season = c(1, 2),
     min_alt = c(100, 50),
     max_alt = c(100, 200)
   )
@@ -13,6 +16,8 @@ test_that("elevation check replaces invalid ranges", {
 })
 
 test_that("missing habitat suitability can be recoded", {
+  skip_if_no_iucn_api_key()
+
   x <- wide_test_data()
   x$iucn_1_1 <- "9991"
 
@@ -22,6 +27,8 @@ test_that("missing habitat suitability can be recoded", {
 })
 
 test_that("missing seasons can be recoded and combined", {
+  skip_if_no_iucn_api_key()
+
   x <- wide_test_data(2)
   x$iucn_id <- c(1, 1)
   x$season <- c(1, 999)
@@ -36,6 +43,8 @@ test_that("missing seasons can be recoded and combined", {
 })
 
 test_that("code fill propagates Level 2 data to its Level 1 habitat", {
+  skip_if_no_iucn_api_key()
+
   x <- wide_test_data()
   x$iucn_2_1 <- "31"
 
@@ -52,7 +61,12 @@ test_that("code fill propagates Level 2 data to its Level 1 habitat", {
 })
 
 test_that("acceptable habitat values can be retained and filtered", {
+  skip_if_no_iucn_api_key()
+
   x <- wide_test_data(2)
+  x$iucn_id <- c(1L, 1L)
+  x$binomial <- "Test species"
+  x$season <- c(1, 2)
   x$iucn_1_1 <- c("31", "21")
 
   result <- RL_subset_acceptable(
@@ -63,10 +77,14 @@ test_that("acceptable habitat values can be retained and filtered", {
 
   expect_equal(nrow(result), 1L)
   expect_equal(as.character(result$iucn_1_1), "31")
+  expect_true(any(!is.na(result$iucn_1_1)))
 })
 
 test_that("season subsetting selects requested species-season rows", {
+  skip_if_no_iucn_api_key()
+
   x <- wide_test_data(2)
+  x$iucn_id <- c(1L, 1L)
   x$season <- c(1, 2)
   x$binomial <- "Test species"
   x$iucn_1_1 <- c("31", "21")
@@ -84,21 +102,37 @@ test_that("season subsetting selects requested species-season rows", {
   expect_equal(as.character(result$iucn_1_1), "21")
 })
 
-test_that("wide data can be reformatted to long data and back", {
+test_that("wide habitat data can be reformatted to long format", {
+  skip_if_no_iucn_api_key()
+
   x <- wide_test_data()
   x$iucn_1_1 <- "31"
 
-  long <- RL_reformat_long(x)
-  wide <- RL_reformat_wide(long)
+  result <- RL_reformat_long(x)
 
-  expect_equal(nrow(long), 1L)
-  expect_equal(long$level_2, "1.1")
-  expect_equal(long$suitability, "3")
-  expect_equal(long$major_importance, "1")
-  expect_equal(as.character(wide$iucn_1_1), "31")
+  expect_equal(nrow(result), 1L)
+  expect_equal(result$level_2, "1.1")
+  expect_equal(result$suitability, "3")
+  expect_equal(result$major_importance, "1")
+  expect_true(any(!is.na(result$suitability)))
+})
+
+test_that("long habitat data can be reformatted to wide format", {
+  skip_if_no_iucn_api_key()
+
+  x <- wide_test_data()
+  x$iucn_1_1 <- "31"
+  long <- RL_reformat_long(x)
+
+  result <- RL_reformat_wide(long)
+
+  expect_equal(nrow(result), 1L)
+  expect_equal(as.character(result$iucn_1_1), "31")
 })
 
 test_that("crosswalk can combine habitat values into one recoded column", {
+  skip_if_no_iucn_api_key()
+
   x <- wide_test_data()
   x$iucn_1_1 <- "31"
   x$iucn_1_2 <- "21"

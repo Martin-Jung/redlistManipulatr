@@ -13,6 +13,8 @@ test_that("RL_fetch returns wide Red List data", {
   expect_s3_class(result, "data.frame")
   expect_true(all(c("iucn_id", "season", "binomial") %in% names(result)))
   expect_true(nrow(result) >= 1L)
+  expect_true(any(!is.na(result$iucn_id)))
+  expect_true(any(result$binomial == "Panthera leo", na.rm = TRUE))
 })
 
 test_that("RL_threats returns long Red List threat data", {
@@ -30,4 +32,7 @@ test_that("RL_threats returns long Red List threat data", {
   expect_s3_class(result, "data.frame")
   expect_true(all(c("iucn_id", "binomial", "code") %in% names(result)))
   expect_true(nrow(result) >= 1L)
+  expect_true(any(!is.na(result$iucn_id)))
+  expect_true(any(result$binomial == "Panthera leo", na.rm = TRUE))
+  expect_true(any(!is.na(result$code)))
 })

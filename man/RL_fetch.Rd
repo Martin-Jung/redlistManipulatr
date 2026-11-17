@@ -17,13 +17,13 @@ RL_fetch(
 )
 }
 \arguments{
-\item{x}{A vector, list, or \code{data.frame} of species binomials or IUCN Red List IDs.}
+\item{x}{A vector, list, or \code{data.frame} of species binomials or IUCN assessment IDs. For \code{query = "ID"}, use the \code{assessment_id} column returned by \code{RL_sp_list()}.}
 
 \item{col.name}{Column name containing species names or IDs when \code{x} is a \code{data.frame}. Not used for vectors or lists.}
 
 \item{key}{IUCN Red List API key. Defaults to \code{Sys.getenv("IUCN_REDLIST_KEY")}. Set \code{IUCN_REDLIST_KEY} in your \code{.Renviron} file or pass a key explicitly. API keys are available through the account page at \url{https://api.iucnredlist.org/}.}
 
-\item{query}{Lookup type: \code{"name"} to search by scientific name or \code{"ID"} to search by IUCN Red List ID.}
+\item{query}{Lookup type: \code{"name"} to search by scientific name or \code{"ID"} to retrieve a specific assessment by its assessment ID.}
 
 \item{subset}{Proportion of \code{x} to process, from 0 to 1. Defaults to 1 (all entries).}
 

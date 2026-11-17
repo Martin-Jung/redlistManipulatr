@@ -3,11 +3,11 @@
 #' @author Matt Lewis, \email{matthewlewis896@@gmail.com}
 
 #' @param key IUCN Red List API key. Defaults to \code{Sys.getenv("IUCN_REDLIST_KEY")}. Set \code{IUCN_REDLIST_KEY} in your \code{.Renviron} file or pass a key explicitly. API keys are available through the account page at \url{https://api.iucnredlist.org/}.
-#' @param retain.taxonomic.info Which available taxonomy fields to retain: \code{"all"}, \code{"some"} (Kingdom and Class, when supplied), or \code{"none"}. The current summary endpoint supplies Kingdom only. The taxon ID and scientific name are always retained. Defaults to \code{"some"}.
+#' @param retain.taxonomic.info Which available taxonomy fields to retain: \code{"all"}, \code{"some"} (Kingdom and Class, when supplied), or \code{"none"}. The current summary endpoint supplies Kingdom only. The taxon ID, latest assessment ID, and scientific name are always retained. Defaults to \code{"some"}.
 #' @param retain.population Logical. Retain population information if supplied by the endpoint. The current summary endpoint does not provide this field, so requesting it produces a warning. Defaults to \code{FALSE}.
 #' @param retain.category Logical. Include the Red List assessment category. Defaults to \code{TRUE}.
-#' @return A \code{data.frame} with one row per assessment and, depending on the options and fields supplied by the API, columns for taxon ID (\code{taxonid}), Kingdom, scientific name (\code{binomial}), and category.
-#' @details This function returns the latest global summaries. For structured population fields from full assessment records, use \code{RL_population()} with assessment IDs.
+#' @return A \code{data.frame} with one row per assessment and, depending on the options and fields supplied by the API, columns for taxon ID (\code{taxonid}), latest assessment ID (\code{assessment_id}), Kingdom, scientific name (\code{binomial}), and category.
+#' @details This function returns the latest global summaries. The \code{assessment_id} column can be passed to ID-mode queries in \code{RL_fetch()} and \code{RL_threats()}. For structured population fields from full assessment records, use \code{RL_population()} with assessment IDs.
 #' @export
 
 RL_sp_list <-
@@ -69,6 +69,7 @@ RL_sp_list <-
     assessments <- do.call(rbind, kingdom_results)
     required_columns <- c(
       "sis_taxon_id",
+      "assessment_id",
       "taxon_scientific_name",
       "red_list_category_code",
       "kingdom"
@@ -79,6 +80,7 @@ RL_sp_list <-
 
     species_df <- data.frame(
       taxonid = assessments$sis_taxon_id,
+      assessment_id = assessments$assessment_id,
       kingdom = assessments$kingdom,
       binomial = assessments$taxon_scientific_name,
       category = assessments$red_list_category_code,
@@ -108,6 +110,7 @@ RL_sp_list <-
     if (retain.category) {
       retained.columns <- c(retained.columns, "category")
     }
+    retained.columns <- c("taxonid", "assessment_id", setdiff(retained.columns, "taxonid"))
     species_df <- species_df[, retained.columns, drop = FALSE]
 
     return(species_df)

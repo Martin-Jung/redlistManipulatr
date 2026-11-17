@@ -3,8 +3,8 @@
 #' @author Matt Lewis, \email{matthewlewis896@@gmail.com}
 #' @keywords internal
 #'
-#' @param x Vector of species names or IUCN Red List IDs.
-#' @param query Lookup type: \code{"name"} for species names or \code{"ID"} for IUCN Red List IDs.
+#' @param x Vector of species names or IUCN assessment IDs.
+#' @param query Lookup type: \code{"name"} for species names or \code{"ID"} for IUCN assessment IDs.
 #' @param key IUCN Red List API key, normally supplied by \code{RL_fetch()}.
 #' @param sleep_dur Number of seconds to wait between API calls.
 #' @param subset Proportion of \code{x} to process, from 0 to 1.
@@ -73,12 +73,10 @@ fetch_par <-
       species <- as.character(x[i])
       #trying with an error phase if needed
       df <- tryCatch({
-        if (query == "name") {
-          habs <- rredlist::rl_habitats(name = species, key = key)
-
-        } else if (query == "ID") {
-          habs <-
-            rredlist::rl_habitats(id = as.numeric(as.character(species)), key = key)
+        assessment <- .rl_assessment_for_query(species, query, key)
+        habs <- list(result = assessment$habitats)
+        if (is.data.frame(habs$result) && "majorImportance" %in% names(habs$result)) {
+          habs$result$majorimportance <- habs$result$majorImportance
         }
         if(length(habs$result)>0){
 
@@ -148,7 +146,7 @@ fetch_par <-
             for (k in 1:nrow(temp)) {
               hab_column <-
                 paste("iucn", paste(unlist(
-                  strsplit(temp$code[k], split = "[.]")
+                  strsplit(temp$code[k], split = "[_.]")
                 ), collapse = "_"), sep = "_")
               df[j, hab_column] = temp$suitability[k]
             }
@@ -163,27 +161,23 @@ fetch_par <-
         #and now the rest
         #brief sleep
         Sys.sleep(sample(stats::rnorm(100, sleep_dur, 0.1), 1))
-        if (query == "name") {
-          elevation <- rredlist::rl_search(name = species, key = key)
-        } else if (query == "ID") {
-          elevation <-
-            rredlist::rl_search(id = as.numeric(as.character(species)), key = key)
-        }
-        if(length(elevation$result)>0){
-          df$iucn_id = as.numeric(as.character(elevation$result$taxonid[1]))
-          df$kingdom = as.character(elevation$result$kingdom[1])
-          df$class = as.character(elevation$result$class[1])
-          df$binomial = as.character(elevation$result$scientific_name[1])
-          df$min_alt = as.numeric(as.character(elevation$result$elevation_lower[1]))
-          df$max_alt = as.numeric(as.character(elevation$result$elevation_upper[1]))
-          df$iucn_category=as.character(elevation$result$category[1])
-        }else{
-          if (query == "name") {
-            df$binomial = species
-          } else if (query == "ID") {
-            df$iucn_id = species
-          }
-        }
+        taxon <- assessment$taxon
+        supplementary_info <- assessment$supplementary_info
+        df$iucn_id <- .rl_assessment_taxon_id(assessment)
+        df$kingdom <- as.character(.rl_assessment_field_value(taxon$kingdom_name))
+        df$class <- as.character(.rl_assessment_field_value(taxon$class_name))
+        df$binomial <- .rl_assessment_taxon_name(assessment)
+        df$min_alt <- as.numeric(.rl_assessment_field_value(
+          supplementary_info$lower_elevation_limit,
+          default = NA_real_
+        ))
+        df$max_alt <- as.numeric(.rl_assessment_field_value(
+          supplementary_info$upper_elevation_limit,
+          default = NA_real_
+        ))
+        df$iucn_category <- as.character(.rl_assessment_field_value(
+          assessment$red_list_category$code
+        ))
         #if NA lets make it clear that's because of a lack of data
         if (is.na(df$min_alt[1])) {
           df$min_alt = -99999
@@ -201,9 +195,9 @@ fetch_par <-
         df[,which(colnames(df) == "iucn_1_1"):length(df)] <-
           66
         if (query == "name") {
-          df$binomial = species
+          df$binomial <- species
         } else if (query == "ID") {
-          df$iucn_id = species
+          df$iucn_id <- NA_real_
         }
         df$min_alt=-99999
         df$max_alt=99999

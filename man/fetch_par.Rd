@@ -15,11 +15,11 @@ fetch_par(
 )
 }
 \arguments{
-\item{x}{Vector of species names or IUCN Red List IDs.}
+\item{x}{Vector of species names or IUCN assessment IDs.}
 
 \item{key}{IUCN Red List API key, normally supplied by \code{RL_fetch()}.}
 
-\item{query}{Lookup type: \code{"name"} for species names or \code{"ID"} for IUCN Red List IDs.}
+\item{query}{Lookup type: \code{"name"} for species names or \code{"ID"} for IUCN assessment IDs.}
 
 \item{subset}{Proportion of \code{x} to process, from 0 to 1.}
 

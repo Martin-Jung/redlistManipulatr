@@ -14,20 +14,20 @@ RL_sp_list(
 \arguments{
 \item{key}{IUCN Red List API key. Defaults to \code{Sys.getenv("IUCN_REDLIST_KEY")}. Set \code{IUCN_REDLIST_KEY} in your \code{.Renviron} file or pass a key explicitly. API keys are available through the account page at \url{https://api.iucnredlist.org/}.}
 
-\item{retain.taxonomic.info}{Which available taxonomy fields to retain: \code{"all"}, \code{"some"} (Kingdom and Class, when supplied), or \code{"none"}. The current summary endpoint supplies Kingdom only. The taxon ID and scientific name are always retained. Defaults to \code{"some"}.}
+\item{retain.taxonomic.info}{Which available taxonomy fields to retain: \code{"all"}, \code{"some"} (Kingdom and Class, when supplied), or \code{"none"}. The current summary endpoint supplies Kingdom only. The taxon ID, latest assessment ID, and scientific name are always retained. Defaults to \code{"some"}.}
 
 \item{retain.population}{Logical. Retain population information if supplied by the endpoint. The current summary endpoint does not provide this field, so requesting it produces a warning. Defaults to \code{FALSE}.}
 
 \item{retain.category}{Logical. Include the Red List assessment category. Defaults to \code{TRUE}.}
 }
 \value{
-A \code{data.frame} with one row per assessment and, depending on the options and fields supplied by the API, columns for taxon ID (\code{taxonid}), Kingdom, scientific name (\code{binomial}), and category.
+A \code{data.frame} with one row per assessment and, depending on the options and fields supplied by the API, columns for taxon ID (\code{taxonid}), latest assessment ID (\code{assessment_id}), Kingdom, scientific name (\code{binomial}), and category.
 }
 \description{
 Retrieve the latest global assessment summary for species from the IUCN Red List API. The function combines the current kingdom-level summary endpoints.
 }
 \details{
-This function returns the latest global summaries. For structured population fields from full assessment records, use \code{RL_population()} with assessment IDs.
+This function returns the latest global summaries. The \code{assessment_id} column can be passed to ID-mode queries in \code{RL_fetch()} and \code{RL_threats()}. For structured population fields from full assessment records, use \code{RL_population()} with assessment IDs.
 }
 \author{
 Matt Lewis, \email{matthewlewis896@gmail.com}
