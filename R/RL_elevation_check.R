@@ -42,12 +42,12 @@ RL_elevation_check <-
 
     # get vals from data
     min_alt <-
-      x$min_alt %>%
-      as.character() %>%
+      x$min_alt |>
+      as.character() |>
       as.numeric()
     max_alt <-
-      x$max_alt %>%
-      as.character() %>%
+      x$max_alt |>
+      as.character() |>
       as.numeric()
 
     # get delta

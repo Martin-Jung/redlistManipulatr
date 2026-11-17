@@ -18,4 +18,7 @@ The first value, or \code{default} when no value is available.
 \description{
 Return the first field value, or a default when the value is empty.
 }
+\author{
+Martin Jung
+}
 \keyword{internal}

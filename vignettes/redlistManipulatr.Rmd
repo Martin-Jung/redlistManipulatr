@@ -72,7 +72,13 @@ knitr::kable(sp_list[1:10,])
 
 `RL_fetch()` obtains habitat and elevation data from the Red List API.
 
-Supply species names or IUCN Red List IDs through `x`, as a vector, list, or `data.frame`. Set `query` to `"name"` or `"ID"` to choose the lookup type. If `x` is a `data.frame`, use `col.name` to identify the column containing the names or IDs.
+Supply species names or IUCN Red List IDs through `x`, as a vector, list, or `data.frame`. For vectors and lists, set `query` to `"name"` or `"ID"` to choose the lookup type. For a `data.frame`, use `col.name` to identify the column containing the names or IDs.
+
+For a `data.frame` with an `assessment_id` column, such as `sp_list`, `col.name` defaults to `"assessment_id"` and `query` defaults to `"ID"`:
+
+``` {r, eval = FALSE}
+df_by_id <- RL_fetch(x = sp_list)
+```
 
 The function reads the API key by default from `Sys.getenv("IUCN_REDLIST_KEY")`. Set `IUCN_REDLIST_KEY=your.api.key` in your `.Renviron` file, or pass `key` explicitly. API keys are available through the account page at <https://api.iucnredlist.org/>.
 
@@ -342,7 +348,7 @@ knitr::kable(df7[,])
 
 `RL_threats()` retrieves threat information from the Red List API and returns one row per species-threat combination.
 
-As with `RL_fetch()`, supply species names or IUCN Red List IDs through `x` as a vector, list, or `data.frame`. Set `query` to `"name"` or `"ID"`. For a `data.frame`, use `col.name` to identify the column containing the names or IDs.
+As with `RL_fetch()`, supply species names or IUCN Red List IDs through `x` as a vector, list, or `data.frame`. Set `query` to `"name"` or `"ID"` for vectors and lists. For a `data.frame`, `RL_threats()` defaults to the `assessment_id` column and ID lookup, matching the output of `RL_sp_list()`. Set `col.name` and `query` when using a different column or lookup type.
 
 The function reads the API key by default from `Sys.getenv("IUCN_REDLIST_KEY")`. Set `IUCN_REDLIST_KEY=your.api.key` in your `.Renviron` file, or pass `key` explicitly. API keys are available through the account page at <https://api.iucnredlist.org/>.
 

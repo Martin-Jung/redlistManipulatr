@@ -11,8 +11,8 @@ RL_recode_suitabilities <-
     x
   ){
     cols_to_check <-
-      hab_col_positions() %>%
-      unlist() %>%
+      hab_col_positions() |>
+      unlist() |>
       sort()
     for(i in 1:nrow(x)){
       for(j in cols_to_check){
@@ -20,8 +20,8 @@ RL_recode_suitabilities <-
           x[i,j]
         if(!is.na(val)){
           val <-
-            val %>%
-            strsplit("") %>%
+            val |>
+            strsplit("") |>
             unlist()
           suit <-
             paste0(

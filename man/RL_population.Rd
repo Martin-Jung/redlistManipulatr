@@ -32,3 +32,6 @@ Retrieve structured population fields from full IUCN Red List assessment records
 \details{
 The returned fields cover population trend; mature individuals; fragmentation and decline; subpopulation counts and trends; and past, future, and ongoing population change, reduction, and causes. Population values are taken from supplementary information in each full assessment record.
 }
+\author{
+Martin Jung
+}

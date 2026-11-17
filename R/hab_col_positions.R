@@ -11,22 +11,22 @@ hab_col_positions <-
   ){
     cols_to_check <- which(colnames(x) == "iucn_1"):length(x)
     level1_cols <-
-      colnames(x)[cols_to_check] %>%
-      lapply(.,
+      colnames(x)[cols_to_check] |>
+      lapply(
              function(x){
                x <-
-                 x %>%
-                 strsplit("_") %>%
+                 x |>
+                 strsplit("_") |>
                  unlist()
                if(length(x) == 2){
                  return(1)
                }else{
                  return(NA)
                }
-             }) %>%
+             }) |>
       unlist()
     level1_cols <-
-      cols_to_check[!is.na(level1_cols)] %>%
+      cols_to_check[!is.na(level1_cols)] |>
       as.list()
 
     level2_cols <- list()

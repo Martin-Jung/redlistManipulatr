@@ -25,13 +25,13 @@ RL_reformat_long <-
     major_importance <- redlistManipulatr::major_importance
 
     hab_cols <-
-      hab_col_positions() %>%
-      unlist() %>%
-      sort() %>%
+      hab_col_positions() |>
+      unlist() |>
+      sort() |>
       as.vector()
 
     df <-
-      x %>%
+      x |>
       tidyr::pivot_longer(
         cols = tidyselect::all_of(hab_cols),
         names_to = "level_3",
@@ -43,22 +43,22 @@ RL_reformat_long <-
     }
 
     df$level_3 <-
-      df$level_3 %>%
-      gsub("iucn_", "", .) %>%
-      gsub("_", ".", .)
+      df$level_3 |>
+      gsub("iucn_", "", x = _) |>
+      gsub("_", ".", x = _)
 
     vals <-
-      df$suitability %>%
-      lapply(.,
+      df$suitability |>
+      lapply(
              function(y){
                if(!is.na(y)){
                  y <-
-                   y %>%
-                   strsplit("") %>%
+                   y |>
+                   strsplit("") |>
                    unlist()
                  maj_imp <- y[length(y)]
                  suit <-
-                   y[1:(length(y)-1)] %>%
+                   y[1:(length(y)-1)] |>
                    paste(
                      collapse = ""
                    )

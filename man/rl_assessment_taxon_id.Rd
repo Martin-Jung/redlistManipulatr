@@ -16,4 +16,7 @@ Numeric taxon ID, or \code{NA_real_} if unavailable.
 \description{
 Return the assessment's taxon ID, falling back to the nested taxon SIS ID.
 }
+\author{
+Martin Jung
+}
 \keyword{internal}

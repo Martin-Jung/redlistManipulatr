@@ -1,6 +1,6 @@
 #' Fetch Red List threat data with parallel processing
 #' @description Internal helper for the parallel path in \code{RL_threats()}.
-#' @author Matt Lewis, \email{matthewlewis896@@gmail.com}
+#' @author Matt Lewis, \email{matthewlewis896@@gmail.com} and Martin Jung
 #' @keywords internal
 #'
 #' @param x Vector of species names or IUCN assessment IDs.
@@ -52,12 +52,12 @@ threats_par <-
       i = subset,
       .combine = rbind,
       .options.snow = opts,
-      .packages = c("rredlist")
+      .packages = c("rredlist", "redlistManipulatr")
     ) %dopar% {
       species <- as.character(x[i])
       df <- tryCatch({
-        assessment <- .rl_assessment_for_query(species, query, key)
-        .rl_threats_from_assessment(assessment)
+        assessment <- redlistManipulatr:::.rl_assessment_for_query(species, query, key)
+        redlistManipulatr:::.rl_threats_from_assessment(assessment)
       }, error = function(err) {
         df <- temp_df[1L, , drop = FALSE]
         df$code <- "999"

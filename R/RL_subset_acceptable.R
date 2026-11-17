@@ -22,8 +22,8 @@ RL_subset_acceptable <-
     }
 
     cols_to_check <-
-      hab_col_positions() %>%
-      unlist() %>%
+      hab_col_positions() |>
+      unlist() |>
       sort()
 
     if(all(!is.na(acceptable_suitabilities)) |
@@ -33,17 +33,17 @@ RL_subset_acceptable <-
       for(i in 1:nrow(x)){
         vals <- x[i, cols_to_check]
         vals <-
-          vals %>%
-          lapply(.,
+          vals |>
+          lapply(
                  function(y){
                    if(!is.na(y)){
                      y <-
-                       y %>%
-                       strsplit("") %>%
+                       y |>
+                       strsplit("") |>
                        unlist()
                      maj_imp <- y[length(y)]
                      suit <-
-                       y[1:(length(y)-1)] %>%
+                       y[1:(length(y)-1)] |>
                        paste(collapse = "")
 
                      allow = 0
@@ -69,7 +69,7 @@ RL_subset_acceptable <-
                      }
                    }
                    return(y)
-                 }) %>%
+                 }) |>
           unlist()
         if(all(is.na(vals))){
           rows_to_remove <- c(rows_to_remove, i)

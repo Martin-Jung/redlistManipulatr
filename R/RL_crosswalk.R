@@ -50,34 +50,34 @@ RL_crosswalk <-
     }
 
     lut[,old.col] <-
-      lut[,old.col] %>%
-      gsub("\\.", "_", .) %>%
-      lapply(.,
+      lut[,old.col] |>
+      gsub("\\.", "_", x = _) |>
+      lapply(
              function(x){
                paste0("iucn_", x)
-               })%>%
+               }) |>
       unlist()
 
     # Change column names
     cols_to_check <-
-      hab_col_positions() %>%
-      unlist() %>%
+      hab_col_positions() |>
+      unlist() |>
       sort()
 
     old_colnames <-
-      colnames(x)[cols_to_check] %>%
-      gsub("iucn_", "", .) %>%
-      gsub("_", ".", .)
+      colnames(x)[cols_to_check] |>
+      gsub("iucn_", "", x = _) |>
+      gsub("_", ".", x = _)
 
     new_colnames <-
-      lut[,new.col] %>%
+      lut[,new.col] |>
       unique()
 
     output <-
       matrix(
         nrow = nrow(x),
         ncol = ((length(x) - length(old_colnames)) + length(new_colnames))
-      ) %>%
+      ) |>
       as.data.frame()
 
     colnames(output) <-
@@ -128,12 +128,12 @@ RL_crosswalk <-
               output[i, j] <- x[i, which(colnames(x) == competing_cols)]
             } else{
               best_val <-
-                vals %>%
-                lapply(.,
+                vals |>
+                lapply(
                        function(z) {
                          which(pref_order == z)
-                       }) %>%
-                unlist() %>%
+                       }) |>
+                unlist() |>
                 which.min()
               output[i, j] <- vals[best_val]
             }

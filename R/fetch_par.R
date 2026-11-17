@@ -1,6 +1,6 @@
 #' Fetch Red List habitat and elevation data in parallel
 #' @description Internal helper for the parallel path in \code{RL_fetch()}.
-#' @author Matt Lewis, \email{matthewlewis896@@gmail.com}
+#' @author Matt Lewis, \email{matthewlewis896@@gmail.com} and Martin Jung
 #' @keywords internal
 #'
 #' @param x Vector of species names or IUCN assessment IDs.
@@ -37,8 +37,8 @@ fetch_par <-
     }
 
     cols_to_check <-
-      hab_col_positions() %>%
-      unlist() %>%
+      hab_col_positions() |>
+      unlist() |>
       sort()
 
     invisible(
@@ -65,7 +65,7 @@ fetch_par <-
       i = subset,
       .combine = rbind,
       .options.snow = opts,
-      .packages = c("rredlist")#packages needing maintaining in this loop
+      .packages = c("rredlist", "redlistManipulatr")
     ) %dopar% {
       #Let's see how many of 5 seasons we can fill - output df in the form we want
       df <- temp_df
@@ -73,7 +73,7 @@ fetch_par <-
       species <- as.character(x[i])
       #trying with an error phase if needed
       df <- tryCatch({
-        assessment <- .rl_assessment_for_query(species, query, key)
+        assessment <- redlistManipulatr:::.rl_assessment_for_query(species, query, key)
         habs <- list(result = assessment$habitats)
         if (is.data.frame(habs$result) && "majorImportance" %in% names(habs$result)) {
           habs$result$majorimportance <- habs$result$majorImportance
@@ -163,19 +163,19 @@ fetch_par <-
         Sys.sleep(sample(stats::rnorm(100, sleep_dur, 0.1), 1))
         taxon <- assessment$taxon
         supplementary_info <- assessment$supplementary_info
-        df$iucn_id <- .rl_assessment_taxon_id(assessment)
-        df$kingdom <- as.character(.rl_assessment_field_value(taxon$kingdom_name))
-        df$class <- as.character(.rl_assessment_field_value(taxon$class_name))
-        df$binomial <- .rl_assessment_taxon_name(assessment)
-        df$min_alt <- as.numeric(.rl_assessment_field_value(
+        df$iucn_id <- redlistManipulatr:::.rl_assessment_taxon_id(assessment)
+        df$kingdom <- as.character(redlistManipulatr:::.rl_assessment_field_value(taxon$kingdom_name))
+        df$class <- as.character(redlistManipulatr:::.rl_assessment_field_value(taxon$class_name))
+        df$binomial <- redlistManipulatr:::.rl_assessment_taxon_name(assessment)
+        df$min_alt <- as.numeric(redlistManipulatr:::.rl_assessment_field_value(
           supplementary_info$lower_elevation_limit,
           default = NA_real_
         ))
-        df$max_alt <- as.numeric(.rl_assessment_field_value(
+        df$max_alt <- as.numeric(redlistManipulatr:::.rl_assessment_field_value(
           supplementary_info$upper_elevation_limit,
           default = NA_real_
         ))
-        df$iucn_category <- as.character(.rl_assessment_field_value(
+        df$iucn_category <- as.character(redlistManipulatr:::.rl_assessment_field_value(
           assessment$red_list_category$code
         ))
         #if NA lets make it clear that's because of a lack of data

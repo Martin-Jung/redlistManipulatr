@@ -25,6 +25,40 @@ test_that("RL_sp_list retains latest assessment IDs", {
   expect_equal(result$binomial, "Panthera leo")
 })
 
+test_that("RL_sp_list limits results using only the required pages", {
+  queried_pages <- integer()
+  testthat::local_mocked_bindings(
+    rl_version = function(key) "test-version",
+    rl_kingdom = function(kingdom = NULL, key = NULL, all = TRUE, page = 1, ...) {
+      if (is.null(kingdom)) {
+        return(list(kingdom_names = c("ANIMALIA", "PLANTAE")))
+      }
+
+      expect_false(all)
+      queried_pages <<- c(queried_pages, page)
+      first_id <- (page - 1L) * 2L + 1L
+      list(assessments = data.frame(
+        sis_taxon_id = first_id + 0:1,
+        assessment_id = first_id + 100:101,
+        taxon_scientific_name = paste("Species", first_id + 0:1),
+        red_list_category_code = "LC",
+        stringsAsFactors = FALSE
+      ))
+    },
+    .package = "rredlist"
+  )
+
+  result <- RL_sp_list(
+    key = "test-key",
+    retain.taxonomic.info = "none",
+    limit = 3L
+  )
+
+  expect_equal(nrow(result), 3L)
+  expect_equal(result$taxonid, 1:3)
+  expect_equal(queried_pages, c(1L, 2L))
+})
+
 test_that("assessment ID queries fetch and format threats from that assessment", {
   assessment <- list(
     assessment_id = 456L,
@@ -67,7 +101,47 @@ test_that("assessment ID queries fetch and format threats from that assessment",
   expect_equal(result$level3_code, "1")
 })
 
+test_that("RL_threats defaults data frames to their assessment_id column", {
+  skip_if_no_iucn_api_key()
+
+  assessment <- list(
+    assessment_id = 456L,
+    sis_taxon_id = 123L,
+    taxon = list(scientific_name = "Panthera leo")
+  )
+  testthat::local_mocked_bindings(
+    rl_version = function(key) "test-version",
+    rl_assessment = function(id, key) {
+      expect_equal(id, 456)
+      assessment
+    },
+    .package = "rredlist"
+  )
+
+  result <- RL_threats(
+    x = data.frame(assessment_id = 456L),
+    key = "test-key",
+    parallel = FALSE,
+    sleep_dur = 1,
+    verbose = 0
+  )
+
+  expect_equal(result$iucn_id, 123)
+  expect_equal(result$binomial, "Panthera leo")
+  expect_equal(result$code, "999")
+  expect_error(
+    RL_threats(
+      x = data.frame(taxonid = 123L),
+      key = "test-key",
+      parallel = FALSE,
+      verbose = 0
+    ),
+    "Column 'assessment_id' was not found in 'x'"
+  )
+})
+
 test_that("name queries use the latest species assessment lookup", {
+    skip_if_no_iucn_api_key()
   testthat::local_mocked_bindings(
     rl_species_latest = function(genus, species, infra = NULL, key) {
       expect_equal(genus, "Panthera")

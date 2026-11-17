@@ -19,6 +19,7 @@ Authors@R: c(
             comment = c(ORCID = "0000-0002-3360-5861")))
 Description: Functions for retrieving and manipulating IUCN Red List habitat, elevation, threat, and population data.
 License: MIT + file LICENSE
+Depends: R (>= 4.1.0)
 Encoding: UTF-8
 Language: en-GB
 LazyData: true
@@ -26,7 +27,6 @@ Licence: MIT
 Roxygen: list(markdown = TRUE)
 Imports: 
     rredlist (>= 1.0.0),
-    magrittr,
     parallel,
     foreach,
     snow,

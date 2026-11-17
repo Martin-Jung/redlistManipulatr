@@ -7,6 +7,7 @@
 #' @param quiet Logical. If \code{TRUE}, suppress the progress bar from \code{rredlist::rl_assessment_list()}. Defaults to \code{FALSE}.
 #' @return A \code{data.frame} with one row per requested assessment ID and columns for the population fields. Fields absent from an assessment are \code{NA}. Numeric population fields retain their source value and also have \code{_min} and \code{_max} columns; range values such as \code{"100-200"} are split across those columns. If \code{include.documentation = TRUE}, the result also contains \code{documentation_population}.
 #' @details The returned fields cover population trend; mature individuals; fragmentation and decline; subpopulation counts and trends; and past, future, and ongoing population change, reduction, and causes. Population values are taken from supplementary information in each full assessment record.
+#' @author Martin Jung
 #' @export
 RL_population <- function(ids,
                           key = Sys.getenv("IUCN_REDLIST_KEY"),

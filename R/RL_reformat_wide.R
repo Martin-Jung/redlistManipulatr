@@ -30,16 +30,16 @@ RL_reformat_wide <-
 
           if(!is.na(sub2$level_3[k])){
             cat <-
-              sub2$level_3[k] %>%
-              gsub("\\.", "_",.)
+              sub2$level_3[k] |>
+              gsub("\\.", "_", x = _)
           }else if(!is.na(sub2$level_2[k])){
             cat <-
-              sub2$level_2[k] %>%
-              gsub("\\.", "_",.)
+              sub2$level_2[k] |>
+              gsub("\\.", "_", x = _)
           }else if(!is.na(sub2$level_1[k])){
             cat <-
-              sub2$level_1[k] %>%
-              gsub("\\.", "_",.)
+              sub2$level_1[k] |>
+              gsub("\\.", "_", x = _)
           }
 
           col_name <-

@@ -13,11 +13,11 @@ RL_recode_seasons <-
     combine.rows = FALSE
   ){
     sp <-
-      x$iucn_id %>%
+      x$iucn_id |>
       unique()
 
     sp_999 <-
-      x$iucn_id[x$season == 999] %>%
+      x$iucn_id[x$season == 999] |>
       unique()
 
     x$season[x$season == 999] <- 1
@@ -35,9 +35,9 @@ RL_recode_seasons <-
 
             t3 <- t2[1,]
             hab_cols <-
-              hab_col_positions() %>%
-              unlist() %>%
-              sort() %>%
+              hab_col_positions() |>
+              unlist() |>
+              sort() |>
               as.vector()
 
             pref_order = redlistManipulatr::suitability_ordered
@@ -47,12 +47,12 @@ RL_recode_seasons <-
               vals <- vals[!is.na(vals)]
               if(length(vals) >0L){
                 best_val <-
-                  vals %>%
-                  lapply(.,
+                  vals |>
+                  lapply(
                          function(z){
                            which(pref_order == z)
-                         }) %>%
-                  unlist() %>%
+                         }) |>
+                  unlist() |>
                   which.min()
                 t3[1, j] <- vals[best_val]
               }

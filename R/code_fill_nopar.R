@@ -1,6 +1,6 @@
 #' Fill missing Level 1 or Level 2 habitat codes without parallel processing
 #' @description Internal helper for \code{RL_code_fill()} that fills parent or child habitat categories.
-#' @author Matt Lewis, \email{matthewlewis896@@gmail.com}
+#' @author Matt Lewis, \email{matthewlewis896@@gmail.com} and Martin Jung
 #' @keywords internal
 #'
 #' @param x A wide-format \code{data.frame} with one column per habitat category.
@@ -70,12 +70,12 @@ code_fill_nopar <-
                 } else{
                   vals <- df[1, lvl2s]
                   vals_max_priority <-
-                    vals %>%
-                    lapply(.,
+                    vals |>
+                    lapply(
                            function(x) {
                              which(pref_order == x)
-                           }) %>%
-                    unlist() %>%
+                           }) |>
+                    unlist() |>
                     which.min()
 
                   best_val <- vals[vals_max_priority]

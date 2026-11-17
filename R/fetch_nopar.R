@@ -1,6 +1,6 @@
 #' Fetch Red List habitat and elevation data without parallel processing
 #' @description Internal helper for the non-parallel path in \code{RL_fetch()}.
-#' @author Matt Lewis, \email{matthewlewis896@@gmail.com}
+#' @author Matt Lewis, \email{matthewlewis896@@gmail.com} and Martin Jung
 #' @keywords internal
 #'
 #' @param x Vector of species names or IUCN assessment IDs.
@@ -27,8 +27,8 @@ fetch_nopar <-
     suitability <- redlistManipulatr::suitability
     major_importance <- redlistManipulatr::major_importance
     cols_to_check <-
-      hab_col_positions() %>%
-      unlist() %>%
+      hab_col_positions() |>
+      unlist() |>
       sort()
 
     if(verbose == 1){

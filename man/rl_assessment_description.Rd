@@ -18,4 +18,7 @@ English descriptions as a character vector, with missing values where unavailabl
 \description{
 Support both flattened and nested English description fields.
 }
+\author{
+Martin Jung
+}
 \keyword{internal}

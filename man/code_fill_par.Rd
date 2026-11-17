@@ -29,6 +29,6 @@ Internal parallel helper for \code{RL_code_fill()}.
 A child category can supply its value to its Level 1 parent; a Level 1 value can also be copied to its Level 2 categories.
 }
 \author{
-Matt Lewis, \email{matthewlewis896@gmail.com}
+Matt Lewis, \email{matthewlewis896@gmail.com} and Martin Jung
 }
 \keyword{internal}

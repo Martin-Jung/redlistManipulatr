@@ -33,6 +33,6 @@ A long-format \code{data.frame} with one row per species-threat combination.
 Internal helper for the non-parallel path in \code{RL_threats()}.
 }
 \author{
-Matt Lewis, \email{matthewlewis896@gmail.com}
+Matt Lewis, \email{matthewlewis896@gmail.com} and Martin Jung
 }
 \keyword{internal}

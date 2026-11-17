@@ -16,4 +16,7 @@ Long-format threat data frame; assessments without threat data receive code \cod
 \description{
 Format an assessment's threats as the long data frame used by \code{RL_threats()}.
 }
+\author{
+Martin Jung
+}
 \keyword{internal}

@@ -1,10 +1,10 @@
 #' Fetch Red List habitat and elevation data
 #' @description Retrieve habitat, seasonal, and elevation data for species from the IUCN Red List API.
-#' @author Matt Lewis, \email{matthewlewis896@@gmail.com}
+#' @author Matt Lewis, \email{matthewlewis896@@gmail.com} and Martin Jung
 #'
 #' @param x A vector, list, or \code{data.frame} of species binomials or IUCN assessment IDs. For \code{query = "ID"}, use the \code{assessment_id} column returned by \code{RL_sp_list()}.
-#' @param col.name Column name containing species names or IDs when \code{x} is a \code{data.frame}. Not used for vectors or lists.
-#' @param query Lookup type: \code{"name"} to search by scientific name or \code{"ID"} to retrieve a specific assessment by its assessment ID.
+#' @param col.name Column name containing species names or IDs when \code{x} is a \code{data.frame}. Defaults to \code{"assessment_id"}. Not used for vectors or lists.
+#' @param query Lookup type: \code{"name"} to search by scientific name or \code{"ID"} to retrieve a specific assessment by its assessment ID. Defaults to \code{"ID"} for data frames using the \code{assessment_id} column; otherwise required.
 #' @param key IUCN Red List API key. Defaults to \code{Sys.getenv("IUCN_REDLIST_KEY")}. Set \code{IUCN_REDLIST_KEY} in your \code{.Renviron} file or pass a key explicitly. API keys are available through the account page at \url{https://api.iucnredlist.org/}.
 #' @param sleep_dur Number of seconds to wait between API calls. Defaults to 2.
 #' @param subset Proportion of \code{x} to process, from 0 to 1. Defaults to 1 (all entries).
@@ -20,9 +20,9 @@
 
 RL_fetch <-
   function(x,
-           col.name,
+           col.name = "assessment_id",
            key = Sys.getenv("IUCN_REDLIST_KEY"),
-           query,
+           query = NULL,
            subset = 1,
            sleep_dur = 2,
            parallel = TRUE,
@@ -49,11 +49,16 @@ RL_fetch <-
     }
 
     if(is.data.frame(x) == TRUE){
-      if(!is.character(col.name)){
+      if(!is.character(col.name) || length(col.name) != 1L || is.na(col.name) || !nzchar(col.name)){
         stop("Please supply a valid value for 'col.name'. 'col.name' should be a character input.")
-      }else{
-        x <- x[,col.name]
       }
+      if(!(col.name %in% names(x))){
+        stop(sprintf("Column '%s' was not found in 'x'.", col.name))
+      }
+      if(is.null(query) && identical(col.name, "assessment_id")){
+        query <- "ID"
+      }
+      x <- x[[col.name]]
     }
     if(is.list(x) == TRUE){
       x <- unlist(x)
@@ -73,11 +78,11 @@ RL_fetch <-
     }else if(!(query %in% c("name", "ID"))){
       stop("Please supply a valid value for 'query'. 'query' should be between a character input of 'name' or 'ID'.")
     }else if(query == "ID" & is.integer(x)){
-      x <- x %>%
-        as.character() %>%
+      x <- x |>
+        as.character() |>
         as.numeric()
     }else if(query == "name" & is.integer(x)){
-      x <- x %>%
+      x <- x |>
         as.character()
     }
 
@@ -123,9 +128,8 @@ RL_fetch <-
       }
     }
     df <-
-      df %>%
-      do.call(what = "rbind") %>%
-      #tidyr::drop_na("iucn_id") %>%
+      df |>
+      do.call(what = "rbind", args = _) |>
       as.data.frame()
 
     return(df)

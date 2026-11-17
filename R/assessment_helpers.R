@@ -4,6 +4,7 @@
 #' @param query Lookup mode: `"ID"` or `"name"`.
 #' @param key IUCN Red List API key.
 #' @return A parsed assessment list returned by `rredlist`.
+#' @author Martin Jung
 #' @name rl_assessment_for_query
 #' @aliases .rl_assessment_for_query
 #' @keywords internal
@@ -32,6 +33,7 @@
 #' @description Return the assessment's taxon ID, falling back to the nested taxon SIS ID.
 #' @param assessment Parsed IUCN assessment.
 #' @return Numeric taxon ID, or `NA_real_` if unavailable.
+#' @author Martin Jung
 #' @name rl_assessment_taxon_id
 #' @aliases .rl_assessment_taxon_id
 #' @keywords internal
@@ -50,6 +52,7 @@
 #' @description Return the nested taxon's scientific name.
 #' @param assessment Parsed IUCN assessment.
 #' @return Scientific name as a character string, or `NA_character_` if unavailable.
+#' @author Martin Jung
 #' @name rl_assessment_taxon_name
 #' @aliases .rl_assessment_taxon_name
 #' @keywords internal
@@ -66,6 +69,7 @@
 #' @param value Assessment field value.
 #' @param default Value to return when `value` is `NULL` or empty.
 #' @return The first value, or `default` when no value is available.
+#' @author Martin Jung
 #' @name rl_assessment_field_value
 #' @aliases .rl_assessment_field_value
 #' @keywords internal
@@ -81,6 +85,7 @@
 #' @param x Assessment data frame.
 #' @param field Column name to retrieve.
 #' @return The requested column, or a character vector of missing values.
+#' @author Martin Jung
 #' @name rl_assessment_column
 #' @aliases .rl_assessment_column
 #' @keywords internal
@@ -96,6 +101,7 @@
 #' @param x Assessment data frame.
 #' @param field Name of the description field.
 #' @return English descriptions as a character vector, with missing values where unavailable.
+#' @author Martin Jung
 #' @name rl_assessment_description
 #' @aliases .rl_assessment_description
 #' @keywords internal
@@ -128,6 +134,7 @@
 #' @description Format an assessment's threats as the long data frame used by `RL_threats()`.
 #' @param assessment Parsed IUCN assessment.
 #' @return Long-format threat data frame; assessments without threat data receive code `999`.
+#' @author Martin Jung
 #' @name rl_threats_from_assessment
 #' @aliases .rl_threats_from_assessment
 #' @keywords internal

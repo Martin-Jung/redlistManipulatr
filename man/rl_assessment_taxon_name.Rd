@@ -16,4 +16,7 @@ Scientific name as a character string, or \code{NA_character_} if unavailable.
 \description{
 Return the nested taxon's scientific name.
 }
+\author{
+Martin Jung
+}
 \keyword{internal}

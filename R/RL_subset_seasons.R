@@ -61,8 +61,8 @@ RL_subset_seasons <-
     }
 
     cols_to_check <-
-      hab_col_positions() %>%
-      unlist() %>%
+      hab_col_positions() |>
+      unlist() |>
       sort()
 
     pref_order <- redlistManipulatr::suitability_ordered
@@ -92,12 +92,12 @@ RL_subset_seasons <-
               vals <- vals[!is.na(vals)]
               if(length(vals) > 0L){
                 best_val <-
-                  vals %>%
-                  lapply(.,
+                  vals |>
+                  lapply(
                          function(z){
                            which(pref_order == z)
-                         }) %>%
-                  unlist() %>%
+                         }) |>
+                  unlist() |>
                   which.min()
                 temp[1, j] <- vals[best_val]
               }

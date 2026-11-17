@@ -1,6 +1,6 @@
 #' Fetch Red List threat data without parallel processing
 #' @description Internal helper for the non-parallel path in \code{RL_threats()}.
-#' @author Matt Lewis, \email{matthewlewis896@@gmail.com}
+#' @author Matt Lewis, \email{matthewlewis896@@gmail.com} and Martin Jung
 #' @keywords internal
 #'
 #' @param x Vector of species names or IUCN assessment IDs.

@@ -8,7 +8,8 @@ RL_sp_list(
   key = Sys.getenv("IUCN_REDLIST_KEY"),
   retain.taxonomic.info = "some",
   retain.population = FALSE,
-  retain.category = TRUE
+  retain.category = TRUE,
+  limit = NULL
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ RL_sp_list(
 \item{retain.population}{Logical. Retain population information if supplied by the endpoint. The current summary endpoint does not provide this field, so requesting it produces a warning. Defaults to \code{FALSE}.}
 
 \item{retain.category}{Logical. Include the Red List assessment category. Defaults to \code{TRUE}.}
+
+\item{limit}{Maximum number of species to return. Must be a positive whole number. Defaults to \code{NULL}, which retrieves all species.}
 }
 \value{
 A \code{data.frame} with one row per assessment and, depending on the options and fields supplied by the API, columns for taxon ID (\code{taxonid}), latest assessment ID (\code{assessment_id}), Kingdom, scientific name (\code{binomial}), and category.
@@ -30,5 +33,5 @@ Retrieve the latest global assessment summary for species from the IUCN Red List
 This function returns the latest global summaries. The \code{assessment_id} column can be passed to ID-mode queries in \code{RL_fetch()} and \code{RL_threats()}. For structured population fields from full assessment records, use \code{RL_population()} with assessment IDs.
 }
 \author{
-Matt Lewis, \email{matthewlewis896@gmail.com}
+Matt Lewis, \email{matthewlewis896@gmail.com} and Martin Jung
 }

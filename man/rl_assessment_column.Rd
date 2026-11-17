@@ -18,4 +18,7 @@ The requested column, or a character vector of missing values.
 \description{
 Return the requested column or missing values when it is absent.
 }
+\author{
+Martin Jung
+}
 \keyword{internal}

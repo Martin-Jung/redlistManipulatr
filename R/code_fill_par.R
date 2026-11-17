@@ -1,6 +1,6 @@
 #' Fill missing Level 1 or Level 2 habitat codes in parallel
 #' @description Internal parallel helper for \code{RL_code_fill()}.
-#' @author Matt Lewis, \email{matthewlewis896@@gmail.com}
+#' @author Matt Lewis, \email{matthewlewis896@@gmail.com} and Martin Jung
 #' @keywords internal
 #'
 #' @param x A wide-format \code{data.frame} with one column per habitat category.

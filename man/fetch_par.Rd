@@ -36,6 +36,6 @@ A wide-format \code{data.frame} with one row per species-season combination.
 Internal helper for the parallel path in \code{RL_fetch()}.
 }
 \author{
-Matt Lewis, \email{matthewlewis896@gmail.com}
+Matt Lewis, \email{matthewlewis896@gmail.com} and Martin Jung
 }
 \keyword{internal}

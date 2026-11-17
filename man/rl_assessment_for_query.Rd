@@ -20,4 +20,7 @@ A parsed assessment list returned by \code{rredlist}.
 \description{
 Retrieve an assessment by ID or resolve a scientific name to its latest assessment.
 }
+\author{
+Martin Jung
+}
 \keyword{internal}

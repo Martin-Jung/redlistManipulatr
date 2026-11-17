@@ -6,9 +6,9 @@
 \usage{
 RL_threats(
   x,
-  col.name,
+  col.name = "assessment_id",
   key = Sys.getenv("IUCN_REDLIST_KEY"),
-  query,
+  query = NULL,
   subset = 1,
   sleep_dur = 2,
   parallel = TRUE,
@@ -19,11 +19,11 @@ RL_threats(
 \arguments{
 \item{x}{A vector, list, or \code{data.frame} of species binomials or IUCN assessment IDs. For \code{query = "ID"}, use the \code{assessment_id} column returned by \code{RL_sp_list()}.}
 
-\item{col.name}{Column name containing species names or IDs when \code{x} is a \code{data.frame}. Not used for vectors or lists.}
+\item{col.name}{Column name containing species names or IDs when \code{x} is a \code{data.frame}. Defaults to \code{"assessment_id"}. Not used for vectors or lists.}
 
 \item{key}{IUCN Red List API key. Defaults to \code{Sys.getenv("IUCN_REDLIST_KEY")}. Set \code{IUCN_REDLIST_KEY} in your \code{.Renviron} file or pass a key explicitly. API keys are available through the account page at \url{https://api.iucnredlist.org/}.}
 
-\item{query}{Lookup type: \code{"name"} to search by scientific name or \code{"ID"} to retrieve a specific assessment by its assessment ID.}
+\item{query}{Lookup type: \code{"name"} to search by scientific name or \code{"ID"} to retrieve a specific assessment by its assessment ID. Defaults to \code{"ID"} when \code{x} is a data frame and \code{col.name} is \code{"assessment_id"}; otherwise required.}
 
 \item{subset}{Proportion of \code{x} to process, from 0 to 1. Defaults to 1 (all entries).}
 
@@ -45,5 +45,5 @@ Retrieve threat information for species from the IUCN Red List API.
 A threat code of \code{999} indicates that no threat information was available for the species.
 }
 \author{
-Matt Lewis, \email{matthewlewis896@gmail.com}
+Matt Lewis, \email{matthewlewis896@gmail.com} and Martin Jung
 }
